@@ -1,0 +1,6 @@
+table_id,otsl_square,raw_cell_count,bbox_sync,raw_bbox_count
+ADS.2007.page_123_table0,True,22,True,37
+ADS.2007.page_123_table1,True,12,True,20
+PHM.2013.page_30_table0,True,50,True,66
+empty_iocr_table0,True,22,True,37
+empty_iocr_table1,True,12,True,20

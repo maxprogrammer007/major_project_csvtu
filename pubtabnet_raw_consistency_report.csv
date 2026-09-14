@@ -1,0 +1,4 @@
+table_id,otsl_square,raw_cell_count,bbox_sync,raw_bbox_count,n_raw_overlaps,n_cells_at_overlap_check
+PMC1797029_008_00_table0,True,16,True,16,0,16
+PMC5842539_001_00_table0,True,15,True,15,0,15
+PMC4305205_005_00_table0,True,117,True,117,37,117

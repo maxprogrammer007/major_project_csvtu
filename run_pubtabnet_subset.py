@@ -8,8 +8,9 @@ import json
 from pathlib import Path
 
 from datasets import load_dataset
+from itertools import islice
 
-SAMPLES = 20
+SAMPLES = 3
 OUT_DIR = Path("pubtab_samples")
 IMG_DIR = OUT_DIR / "images"
 JSON_DIR = OUT_DIR / "iocr_jsons"
@@ -17,19 +18,20 @@ IMG_DIR.mkdir(parents=True, exist_ok=True)
 JSON_DIR.mkdir(parents=True, exist_ok=True)
 
 print(f"Loading up to {SAMPLES} samples from ajimeno/PubTabNet...")
-ds = load_dataset("ajimeno/PubTabNet", split=f"train[:{SAMPLES}]")
+# Use streaming to avoid downloading the entire PubTabNet archive.
+ds_stream = load_dataset("ajimeno/PubTabNet", split="train", streaming=True)
 
 mapping = {}
-for i, item in enumerate(ds):
-    # Try common fields for image and filename
-    filename = item.get("filename") or item.get("img_id") or f"pubtab_{i}"
+for i, item in enumerate(islice(ds_stream, SAMPLES)):
+    # Use dataset-provided key/URL for filename if available
+    filename = item.get("__key__") or item.get("filename") or f"pubtab_{i}"
     stem = Path(str(filename)).stem
     img_name = f"{stem}.png"
     img_path = IMG_DIR / img_name
 
     # item may contain a PIL Image or bytes under different keys
     img = None
-    for key in ("img", "image", "image_file", "img_bytes"):
+    for key in ("png", "img", "image", "image_file", "img_bytes"):
         if key in item:
             img = item[key]
             break
@@ -64,15 +66,15 @@ for i, item in enumerate(ds):
                 print(f"Failed to save image for sample {i}")
                 continue
 
-    # create simple iocr JSON (measure_raw_consistency will set image from PNG)
-    iocr = {"pages": [{}]}
+    # create minimal IOCR JSON: empty tokens and page dimensions
+    from PIL import Image
+    w, h = Image.open(img_path).size
+    iocr = {"pages": [{"tokens": [], "width": w, "height": h}]}
     json_path = JSON_DIR / f"{stem}_iocr.json"
     with open(json_path, "w") as fp:
         json.dump(iocr, fp)
 
     # bbox covering whole image
-    from PIL import Image
-    w, h = Image.open(img_path).size
     mapping[img_name] = [[0, 0, w, h]]
 
 print(f"Saved {len(mapping)} images to {IMG_DIR}")

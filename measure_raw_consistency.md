@@ -85,13 +85,62 @@ def _logged_check_bbox_sync(self, prediction):
 TFPredictor._check_bbox_sync = _logged_check_bbox_sync
 
 
+# --- 2b. NEW: geometric overlap signal -------------------------------------
+# _find_overlapping() in matching_post_processor.py mutates cell bboxes in
+# place to push overlapping ones apart, AND its own `overlapping_indexes`
+# tracking list is built but never actually populated -- so the count of
+# raw overlaps is discarded even inside the library itself. To measure it,
+# we reimplement its exact overlap test (do_boxes_overlap) and run it on a
+# COPY of the cells before the original method has a chance to mutate them.
+import copy
+
+from docling_ibm_models.tableformer.data_management.matching_post_processor import (
+    MatchingPostProcessor,
+)
+
+_last_overlap = {}
+
+
+def _boxes_overlap(box1, box2):
+    # exact reimplementation of the library's do_boxes_overlap()
+    B1, B2 = box1["bbox"], box2["bbox"]
+    if B1[0] >= B2[2] or B1[2] <= B2[0] or B1[3] <= B2[1] or B1[1] >= B2[3]:
+        return False
+    return True
+
+
+def _count_raw_overlaps(table_cells):
+    cells_copy = copy.deepcopy(table_cells)
+    n_overlaps = 0
+    for i in range(len(cells_copy)):
+        for j in range(i + 1, len(cells_copy)):
+            if cells_copy[i] != cells_copy[j] and _boxes_overlap(cells_copy[i], cells_copy[j]):
+                n_overlaps += 1
+    return n_overlaps
+
+
+_orig_find_overlapping = MatchingPostProcessor._find_overlapping
+
+
+def _logged_find_overlapping(self, table_cells):
+    _last_overlap["n_raw_overlaps"] = _count_raw_overlaps(table_cells)
+    _last_overlap["n_raw_cells"] = len(table_cells)
+    return _orig_find_overlapping(self, table_cells)  # still applies the real correction
+
+
+MatchingPostProcessor._find_overlapping = _logged_find_overlapping
+
+
 def predict_with_consistency_log(predictor, iocr_page, table_bbox, table_image, scale_factor, table_id):
     """Calls predictor.predict() normally and returns the usual outputs plus
-    a record of the two pre-repair consistency signals for this one table."""
+    a record of the pre-repair consistency signals for this one table."""
     _last_square.clear()
     _last_sync.clear()
+    _last_overlap.clear()
 
-    tf_output, matching_details = predictor.predict(iocr_page, table_bbox, table_image, scale_factor)
+    tf_output, matching_details = predictor.predict(
+        iocr_page, table_bbox, table_image, scale_factor
+    )
 
     record = {
         "table_id": table_id,
@@ -99,6 +148,10 @@ def predict_with_consistency_log(predictor, iocr_page, table_bbox, table_image, 
         "raw_cell_count": _last_square.get("num_cells"),
         "bbox_sync": _last_sync.get("value"),
         "raw_bbox_count": _last_sync.get("num_bboxes_raw"),
+        # New: only populated if enable_post_process=True was passed to predict(),
+        # since _find_overlapping is called from inside MatchingPostProcessor.process().
+        "n_raw_overlaps": _last_overlap.get("n_raw_overlaps"),
+        "n_cells_at_overlap_check": _last_overlap.get("n_raw_cells"),
     }
     return tf_output, matching_details, record
 
@@ -155,9 +208,17 @@ def write_report(records, out_path):
     n = len(records)
     n_square = sum(1 for r in records if r["otsl_square"] is True)
     n_sync = sum(1 for r in records if r["bbox_sync"] is True)
+    overlap_vals = [r["n_raw_overlaps"] for r in records if r["n_raw_overlaps"] is not None]
+    n_with_overlap = sum(1 for v in overlap_vals if v > 0)
+
     print(f"\n--- Summary over {n} tables ---")
-    print(f"OTSL grid valid (square):     {n_square}/{n}  ({100*n_square/n:.1f}%)")
+    print(f"OTSL grid valid (square):      {n_square}/{n}  ({100*n_square/n:.1f}%)")
     print(f"bbox count matches cell count: {n_sync}/{n}  ({100*n_sync/n:.1f}%)")
+    if overlap_vals:
+        print(f"tables with >=1 raw overlap:   {n_with_overlap}/{len(overlap_vals)}  "
+              f"({100*n_with_overlap/len(overlap_vals):.1f}%)")
+    else:
+        print("overlap check: no data -- rerun predict() with enable_post_process=True")
     print(f"Report written to {out_path}")
 
 

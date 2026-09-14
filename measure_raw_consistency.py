@@ -97,35 +97,44 @@ def _boxes_overlap(box1, box2):
     return True
 
 
-def _count_raw_overlaps(table_cells):
-    """Count pairs of distinct (non-identical) cells whose bboxes overlap.
-    Exact duplicate cells are excluded by construction — they are counted
-    separately by _count_exact_duplicates().
+def _analyze_raw_cells(table_cells):
+    """Single-pass analysis of raw predicted table_cells before any post-processing.
+
+    Counts two disjoint categories for each pair (i, j) with i < j:
+      - n_bbox_duplicates : pair has identical bbox lists. These are the artifacts
+        that _deduplicate_cells() targets. MUST compare bboxes only — each cell has
+        a unique cell_id, so whole-dict equality always returns False and would
+        structurally guarantee 0 duplicates regardless of the true rate.
+      - n_overlaps        : pair has distinct bboxes that geometrically overlap.
+        Exact-bbox-equal pairs are excluded from this count by the elif.
+
+    Returns
+    -------
+    (n_overlaps, n_bbox_duplicates) : both are pair counts, not cell counts.
     """
-    cells_copy = copy.deepcopy(table_cells)
+    n = len(table_cells)
     n_overlaps = 0
-    for i in range(len(cells_copy)):
-        for j in range(i + 1, len(cells_copy)):
-            if cells_copy[i] != cells_copy[j] and _boxes_overlap(cells_copy[i], cells_copy[j]):
+    n_bbox_dups = 0
+    for i in range(n):
+        b1 = table_cells[i].get("bbox")
+        for j in range(i + 1, n):
+            b2 = table_cells[j].get("bbox")
+            if b1 == b2:               # identical predicted position → duplicate
+                n_bbox_dups += 1
+            elif _boxes_overlap(table_cells[i], table_cells[j]):
                 n_overlaps += 1
-    return n_overlaps
+    return n_overlaps, n_bbox_dups
+
+
+# Keep thin wrappers for callers that still use the old names
+def _count_raw_overlaps(table_cells):
+    n_ov, _ = _analyze_raw_cells(table_cells)
+    return n_ov
 
 
 def _count_exact_duplicates(table_cells):
-    """Count how many cells are exact duplicates of another cell in the list.
-    These are the artifacts that _deduplicate_cells() is designed to remove.
-    A cell is counted as a duplicate if its bbox is identical to any earlier
-    cell's bbox. Returns the total number of duplicate instances.
-    """
-    seen = []
-    n_dups = 0
-    for cell in table_cells:
-        bbox = tuple(cell.get("bbox", []))
-        if bbox in seen:
-            n_dups += 1
-        else:
-            seen.append(bbox)
-    return n_dups
+    _, n_dup = _analyze_raw_cells(table_cells)
+    return n_dup
 
 # --- 2. Install the instrumentation ---------------------------------------
 # Two small per-call buffers, reset before each predict() call.
@@ -194,13 +203,13 @@ def predict_with_consistency_log(predictor, iocr_page, table_bbox, table_image, 
     finally:
         predictor.enable_post_process = _prev_post
 
-    # Measure pre-repair geometric consistency on a deep copy (cells are mutable dicts)
+    # Measure pre-repair geometric consistency (no deep-copy needed: we read bbox, don't mutate)
     try:
         raw_cells = matching_details_raw.get("table_cells", [])
-        raw_cells_copy = copy.deepcopy(raw_cells)
-        _last_overlap["n_raw_overlaps"] = _count_raw_overlaps(raw_cells_copy)
+        n_ov, n_dup = _analyze_raw_cells(raw_cells)
+        _last_overlap["n_raw_overlaps"] = n_ov
         _last_overlap["n_raw_cells"] = len(raw_cells)
-        _last_overlap["n_exact_duplicates"] = _count_exact_duplicates(raw_cells)
+        _last_overlap["n_exact_duplicates"] = n_dup
     except Exception:
         _last_overlap.clear()
 
@@ -326,40 +335,46 @@ def write_report(records, out_path):
         ov_vals = [(r.get("n_raw_overlaps") or 0) for r in overlap_records]
         total_overlaps = sum(ov_vals)
         mean_ov = total_overlaps / n_ov
+        import statistics
         median_ov = statistics.median(ov_vals)
 
-        print(f"Tables with raw overlaps:        {n_with_overlaps}/{n_ov} ({100*n_with_overlaps/n_ov:.1f}%)")
-        print(f"Overlap count — mean: {mean_ov:.1f},  median: {median_ov:.1f},  total: {total_overlaps}")
+        # IQR-based outlier fence: Q3 + 3*(Q3-Q1). Avoids the circularity of
+        # mean+3stdev when a single dominant outlier inflates both the mean and stdev.
+        sorted_vals = sorted(ov_vals)
+        q1 = statistics.median(sorted_vals[: n_ov // 2])
+        q3 = statistics.median(sorted_vals[(n_ov + 1) // 2 :])
+        iqr = q3 - q1
+        # Use 3*IQR (wider than Tukey's 1.5) to avoid flagging moderate outliers
+        iqr_fence = q3 + 3 * iqr if iqr > 0 else float("inf")
 
-        # Flag outliers: any table with overlap_count > mean + 3*stdev (or > 500 hard cap)
-        if n_ov > 1:
-            try:
-                stdev_ov = statistics.stdev(ov_vals)
-                threshold = mean_ov + 3 * stdev_ov
-            except Exception:
-                threshold = max(ov_vals)
-            outliers = [
-                (r["table_id"], r.get("n_raw_overlaps"), r.get("raw_cell_count"))
-                for r in overlap_records
-                if (r.get("n_raw_overlaps") or 0) > threshold
-            ]
-            if outliers:
-                print(f"  *** OUTLIERS (>mean+3stdev={threshold:.0f}):")
-                for tid, ov, nc in outliers:
-                    print(f"      {tid}: overlaps={ov}, cells={nc}")
-                ov_vals_no_outlier = [v for v in ov_vals if v <= threshold]
-                if ov_vals_no_outlier:
-                    mean_clean = sum(ov_vals_no_outlier) / len(ov_vals_no_outlier)
-                    median_clean = statistics.median(ov_vals_no_outlier)
-                    print(f"  Excluding outliers — mean: {mean_clean:.1f}, median: {median_clean:.1f}")
+        outlier_records = [r for r in overlap_records if (r.get("n_raw_overlaps") or 0) > iqr_fence]
+        normal_records  = [r for r in overlap_records if (r.get("n_raw_overlaps") or 0) <= iqr_fence]
+        normal_vals = [(r.get("n_raw_overlaps") or 0) for r in normal_records]
+
+        print(f"Tables with raw overlaps:        {n_with_overlaps}/{n_ov} ({100*n_with_overlaps/n_ov:.1f}%)")
+        if normal_vals:
+            mean_norm  = sum(normal_vals) / len(normal_vals)
+            median_norm = statistics.median(normal_vals)
+            print(f"Overlap count (ordinary):        mean={mean_norm:.1f}, median={median_norm:.1f}  [n={len(normal_vals)}]")
+        print(f"  (full-sample mean={mean_ov:.1f}, median={median_ov:.1f}, total={total_overlaps})")
+
+        # Catastrophic failures: kept visible as a separate named metric, not scrubbed.
+        # A catastrophic prediction is one where nearly all predicted cell bboxes span
+        # the entire table area (degenerate structural collapse, not minor geometric nudge).
+        if outlier_records:
+            print(f"Catastrophic failures (IQR fence={iqr_fence:.0f}): {len(outlier_records)}/{n_ov}")
+            for r in outlier_records:
+                print(f"    {r['table_id']}: overlaps={r.get('n_raw_overlaps')}, cells={r.get('raw_cell_count')}")
+        else:
+            print(f"Catastrophic failures (IQR fence={iqr_fence:.0f}): 0/{n_ov}")
 
         dup_records = [r for r in records if r.get("n_exact_duplicates") is not None]
         if dup_records:
             n_with_dups = sum(1 for r in dup_records if (r.get("n_exact_duplicates") or 0) > 0)
             total_dups = sum((r.get("n_exact_duplicates") or 0) for r in dup_records)
             n_dr = len(dup_records)
-            print(f"Tables with exact dup cells:     {n_with_dups}/{n_dr} ({100*n_with_dups/n_dr:.1f}%)")
-            print(f"Total exact dup cells:           {total_dups} (mean {total_dups/n_dr:.2f} per table)")
+            print(f"Tables with bbox-dup cells:      {n_with_dups}/{n_dr} ({100*n_with_dups/n_dr:.1f}%)")
+            print(f"Total bbox-dup cell pairs:       {total_dups} (mean {total_dups/n_dr:.2f} per table)")
 
     print(f"Report written to: {out_path}")
     print(f"=======================================================\n")

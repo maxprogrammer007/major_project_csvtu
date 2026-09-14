@@ -122,62 +122,81 @@ if args.inspect_schema:
     sys.exit(0)
 
 # ── Stream and prepare samples ────────────────────────────────────────────────
-from datasets import load_dataset
-
-print(f"Streaming up to {args.samples} samples from {DATASET_ID} ({DATASET_SPLIT})...")
-ds = load_dataset(DATASET_ID, split=DATASET_SPLIT, streaming=True)
-
 mapping = {}   # img_name -> [[x0,y0,x1,y1]]
-prepared = 0
 
-for i, item in enumerate(ds):
-    if prepared >= args.samples:
+# First check for already-cached samples
+existing_pngs = sorted(list(IMG_DIR.glob("*.png")))
+for img_path in existing_pngs:
+    if len(mapping) >= args.samples:
         break
+    json_path = JSON_DIR / f"{img_path.stem}_iocr.json"
+    if json_path.exists():
+        try:
+            with open(json_path, "r") as fp:
+                data = json.load(fp)["pages"][0]
+                w, h = data["width"], data["height"]
+                tokens = data.get("tokens", [])
+                if tokens:
+                    mapping[img_path.name] = [[0, 0, w, h]]
+        except Exception:
+            pass
 
-    img_id = item.get("imgid", i)
-    img_name = f"pubtabnet_tok_{img_id}.png"
-    img_path = IMG_DIR / img_name
-    json_path = JSON_DIR / f"pubtabnet_tok_{img_id}_iocr.json"
+if mapping:
+    print(f"Discovered {len(mapping)} already-cached token sample pairs in {OUT_DIR}.")
 
-    # Save image
-    pil_img = item.get("image")
-    if pil_img is None:
-        print(f"  [skip {i}] no image field")
-        continue
-    try:
-        pil_img.save(img_path)
-    except Exception as e:
-        print(f"  [skip {i}] save failed: {e}")
-        continue
+needed = args.samples - len(mapping)
+if needed > 0:
+    from datasets import load_dataset
+    print(f"Streaming {needed} additional samples from {DATASET_ID} ({DATASET_SPLIT})...")
+    ds = load_dataset(DATASET_ID, split=DATASET_SPLIT, streaming=True)
+    prepared = 0
 
-    w, h = pil_img.size
-    html_str = item.get("html", "{}")
-    tokens, table_bbox = _extract_iocr_tokens(html_str, w, h)
+    for i, item in enumerate(ds):
+        if len(mapping) >= args.samples:
+            break
 
-    if not tokens:
-        # Cell annotations all empty — no usable token bboxes; skip
-        print(f"  [skip {i}] imgid={img_id}: no cell bboxes in annotations")
-        img_path.unlink(missing_ok=True)
-        continue
+        img_id = item.get("imgid", i)
+        img_name = f"pubtabnet_tok_{img_id}.png"
+        img_path = IMG_DIR / img_name
+        json_path = JSON_DIR / f"pubtabnet_tok_{img_id}_iocr.json"
 
-    # Build IOCR JSON in the format TFPredictor expects
-    iocr = {
-        "pages": [{
-            "tokens": tokens,
-            "width": w,
-            "height": h,
-        }]
-    }
-    with open(json_path, "w") as fp:
-        json.dump(iocr, fp)
+        if img_name in mapping:
+            continue
 
-    mapping[img_name] = [table_bbox]
-    prepared += 1
+        # Save image
+        pil_img = item.get("image")
+        if pil_img is None:
+            continue
+        try:
+            pil_img.save(img_path)
+        except Exception as e:
+            continue
 
-    if prepared % 25 == 0:
-        print(f"  Prepared {prepared}/{args.samples} ...")
+        w, h = pil_img.size
+        html_str = item.get("html", "{}")
+        tokens, table_bbox = _extract_iocr_tokens(html_str, w, h)
 
-print(f"\nPrepared {len(mapping)} images with real cell tokens.")
+        if not tokens:
+            img_path.unlink(missing_ok=True)
+            continue
+
+        # Build IOCR JSON in the format TFPredictor expects
+        iocr = {
+            "pages": [{
+                "tokens": tokens,
+                "width": w,
+                "height": h,
+            }]
+        }
+        with open(json_path, "w") as fp:
+            json.dump(iocr, fp)
+
+        mapping[img_name] = [table_bbox]
+        prepared += 1
+        if prepared % 25 == 0:
+            print(f"  Prepared {prepared}/{needed} new samples...")
+
+print(f"\nTotal ready: {len(mapping)} images with real cell tokens.")
 print(f"  Tokens gate will be OPEN (tokens > 0) for all these samples.")
 print(f"  MatchingPostProcessor.process() WILL run — full repair pipeline exercised.\n")
 

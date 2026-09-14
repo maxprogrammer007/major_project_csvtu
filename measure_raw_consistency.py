@@ -21,6 +21,27 @@ find instead of letting the results disappear, and pairs them with a table
 identifier so you get a per-table + aggregate consistency report.
 
 --------------------------------------------------------------------------
+TOKENS GATE — important constraint
+--------------------------------------------------------------------------
+TFPredictor.predict() contains this guard (around line 825-829 of tf_predictor.py):
+
+    if len(prediction["bboxes"]) > 0:
+        if len(iocr_page["tokens"]) > 0:   # <-- gate
+            if self.enable_post_process:
+                matching_details = self._post_processor.process(...)
+
+Post-processing (overlap correction, orphan attachment, deduplication)
+only fires if iocr_page["tokens"] is non-empty. When using the PubTabNet
+Hugging Face mirror (ajimeno/PubTabNet), only PNG images are available —
+no text tokens. So every generated IOCR JSON has tokens=[] and this gate
+is NEVER crossed. This means:
+  - otsl_square, bbox_sync, n_raw_overlaps, n_exact_duplicates are all
+    measured on the raw cell_matcher output and are valid H1 signals.
+  - MatchingPostProcessor.process() (orphan attachment, column deletion,
+    etc.) is NOT exercised by these runs. To measure those, real OCR
+    tokens are required (Tesseract/EasyOCR or a different dataset).
+
+--------------------------------------------------------------------------
 SETUP (run once)
 --------------------------------------------------------------------------
     git clone https://github.com/docling-project/docling-ibm-models
@@ -57,22 +78,19 @@ import copy
 import docling_ibm_models.tableformer.data_management.tf_predictor as tf_predictor_module
 from docling_ibm_models.tableformer.data_management.tf_predictor import TFPredictor
 
-# --- 2b. NEW: geometric overlap signal -------------------------------------
-# _find_overlapping() in matching_post_processor.py mutates cell bboxes in
-# place to push overlapping ones apart, AND its own `overlapping_indexes`
-# tracking list is built but never actually populated -- so the count of
-# raw overlaps is discarded even inside the library itself. To measure it,
-# we reimplement its exact overlap test (do_boxes_overlap) and run it on a
-# COPY of the cells before the original method has a chance to mutate them.
-from docling_ibm_models.tableformer.data_management.matching_post_processor import (
-    MatchingPostProcessor,
-)
+# --- 2b. Geometric overlap and duplicate-cell helpers ----------------------
+# We compute overlap and duplicate counts directly on a copy of the raw
+# table_cells returned by _cell_matcher.match_cells(), captured via the
+# two-call strategy in predict_with_consistency_log(). We do NOT monkeypatch
+# _find_overlapping — that would fire during the *second* predict() call
+# (post-processing enabled) and overwrite the pre-repair count with a value
+# taken mid-repair-pipeline. The two-call approach is strictly more precise.
 
 _last_overlap = {}
 
 
 def _boxes_overlap(box1, box2):
-    # exact reimplementation of the library's do_boxes_overlap()
+    """Reimplementation of the library's do_boxes_overlap() for local use."""
     B1, B2 = box1["bbox"], box2["bbox"]
     if B1[0] >= B2[2] or B1[2] <= B2[0] or B1[3] <= B2[1] or B1[1] >= B2[3]:
         return False
@@ -80,6 +98,10 @@ def _boxes_overlap(box1, box2):
 
 
 def _count_raw_overlaps(table_cells):
+    """Count pairs of distinct (non-identical) cells whose bboxes overlap.
+    Exact duplicate cells are excluded by construction — they are counted
+    separately by _count_exact_duplicates().
+    """
     cells_copy = copy.deepcopy(table_cells)
     n_overlaps = 0
     for i in range(len(cells_copy)):
@@ -89,16 +111,21 @@ def _count_raw_overlaps(table_cells):
     return n_overlaps
 
 
-_orig_find_overlapping = MatchingPostProcessor._find_overlapping
-
-
-def _logged_find_overlapping(self, table_cells):
-    _last_overlap["n_raw_overlaps"] = _count_raw_overlaps(table_cells)
-    _last_overlap["n_raw_cells"] = len(table_cells)
-    return _orig_find_overlapping(self, table_cells)  # still applies the real correction
-
-
-MatchingPostProcessor._find_overlapping = _logged_find_overlapping
+def _count_exact_duplicates(table_cells):
+    """Count how many cells are exact duplicates of another cell in the list.
+    These are the artifacts that _deduplicate_cells() is designed to remove.
+    A cell is counted as a duplicate if its bbox is identical to any earlier
+    cell's bbox. Returns the total number of duplicate instances.
+    """
+    seen = []
+    n_dups = 0
+    for cell in table_cells:
+        bbox = tuple(cell.get("bbox", []))
+        if bbox in seen:
+            n_dups += 1
+        else:
+            seen.append(bbox)
+    return n_dups
 
 # --- 2. Install the instrumentation ---------------------------------------
 # Two small per-call buffers, reset before each predict() call.
@@ -136,18 +163,29 @@ TFPredictor._check_bbox_sync = _logged_check_bbox_sync
 
 
 def predict_with_consistency_log(predictor, iocr_page, table_bbox, table_image, scale_factor, table_id):
-    """Calls predictor.predict() normally and returns the usual outputs plus
-    a record of the two pre-repair consistency signals for this one table."""
+    """Run predict() twice and capture pre-repair structural consistency signals.
+
+    Strategy:
+      1. First call with enable_post_process=False: captures the raw cell_matcher
+         output (table_cells before any repair pipeline runs). Count overlaps and
+         exact duplicates here — this is the cleanest pre-repair snapshot.
+      2. Second call with enable_post_process=True: the real output returned to
+         the caller. Post-processing only fires if iocr_page["tokens"] is non-empty
+         (see tokens gate in tf_predictor.py:825). With tokens=[], this second call
+         is equivalent to the first in terms of post-processing, but we keep both
+         for correctness when real tokens are eventually provided.
+
+    NOTE: We do NOT use the _find_overlapping monkeypatch to count overlaps.
+    That would overwrite this carefully-captured pre-repair count with a value
+    taken from mid-repair-pipeline during the second predict() call.
+    """
     _last_square.clear()
     _last_sync.clear()
     _last_overlap.clear()
 
-    # Strategy: run a quick raw predict with post-processing disabled to capture
-    # the *pre-repair* table_cells (so we can count raw overlaps), then run the
-    # real predict with post-processing enabled to obtain the final outputs.
     _prev_post = getattr(predictor, "enable_post_process", True)
 
-    # 1) Raw predict (no post-processing / no correction)
+    # 1) Raw predict — no post-processing; captures clean pre-repair table_cells
     predictor.enable_post_process = False
     try:
         _, matching_details_raw = predictor.predict(
@@ -156,16 +194,17 @@ def predict_with_consistency_log(predictor, iocr_page, table_bbox, table_image, 
     finally:
         predictor.enable_post_process = _prev_post
 
-    # Count overlaps on a deep copy of the raw table cells to avoid mutation issues
+    # Measure pre-repair geometric consistency on a deep copy (cells are mutable dicts)
     try:
         raw_cells = matching_details_raw.get("table_cells", [])
-        record_overlap = _count_raw_overlaps(raw_cells)
-        _last_overlap["n_raw_overlaps"] = record_overlap
+        raw_cells_copy = copy.deepcopy(raw_cells)
+        _last_overlap["n_raw_overlaps"] = _count_raw_overlaps(raw_cells_copy)
         _last_overlap["n_raw_cells"] = len(raw_cells)
+        _last_overlap["n_exact_duplicates"] = _count_exact_duplicates(raw_cells)
     except Exception:
         _last_overlap.clear()
 
-    # 2) Real predict with post-processing and overlap correction enabled
+    # 2) Real predict — post-processing enabled (fires only if tokens non-empty)
     predictor.enable_post_process = True
     try:
         tf_output, matching_details = predictor.predict(
@@ -180,10 +219,12 @@ def predict_with_consistency_log(predictor, iocr_page, table_bbox, table_image, 
         "raw_cell_count": _last_square.get("num_cells"),
         "bbox_sync": _last_sync.get("value"),
         "raw_bbox_count": _last_sync.get("num_bboxes_raw"),
-        # New: only populated if enable_post_process=True was passed to predict(),
-        # since _find_overlapping is called from inside MatchingPostProcessor.process().
+        # Pre-repair geometric signals (from the raw, no-post-process call):
         "n_raw_overlaps": _last_overlap.get("n_raw_overlaps"),
         "n_cells_at_overlap_check": _last_overlap.get("n_raw_cells"),
+        # Duplicate-cell count: artifacts that _deduplicate_cells() fixes.
+        # Invisible in n_raw_overlaps by design (exact dups excluded there).
+        "n_exact_duplicates": _last_overlap.get("n_exact_duplicates"),
     }
     return tf_output, matching_details, record
 
@@ -266,29 +307,93 @@ def write_report(records, out_path):
         writer.writeheader()
         writer.writerows(records)
 
+    import statistics
+
     n = len(records)
-    n_square = sum(1 for r in records if r["otsl_square"] is True)
-    n_sync = sum(1 for r in records if r["bbox_sync"] is True)
-    print(f"\n--- Summary over {n} tables ---")
-    print(f"OTSL grid valid (square):     {n_square}/{n}  ({100*n_square/n:.1f}%)")
-    print(f"bbox count matches cell count: {n_sync}/{n}  ({100*n_sync/n:.1f}%)")
-    print(f"Report written to {out_path}")
+    n_square = sum(1 for r in records if r.get("otsl_square") is True)
+    n_sync = sum(1 for r in records if r.get("bbox_sync") is True)
+
+    overlap_records = [r for r in records if r.get("n_raw_overlaps") is not None]
+    n_with_overlaps = sum(1 for r in overlap_records if (r.get("n_raw_overlaps") or 0) > 0)
+
+    print(f"\n=======================================================")
+    print(f"--- Consistency Summary over {n} tables ---")
+    print(f"OTSL grid valid (square):        {n_square}/{n} ({100*n_square/n:.1f}%)")
+    print(f"bbox count matches cell count:   {n_sync}/{n} ({100*n_sync/n:.1f}%)")
+
+    if overlap_records:
+        n_ov = len(overlap_records)
+        ov_vals = [(r.get("n_raw_overlaps") or 0) for r in overlap_records]
+        total_overlaps = sum(ov_vals)
+        mean_ov = total_overlaps / n_ov
+        median_ov = statistics.median(ov_vals)
+
+        print(f"Tables with raw overlaps:        {n_with_overlaps}/{n_ov} ({100*n_with_overlaps/n_ov:.1f}%)")
+        print(f"Overlap count — mean: {mean_ov:.1f},  median: {median_ov:.1f},  total: {total_overlaps}")
+
+        # Flag outliers: any table with overlap_count > mean + 3*stdev (or > 500 hard cap)
+        if n_ov > 1:
+            try:
+                stdev_ov = statistics.stdev(ov_vals)
+                threshold = mean_ov + 3 * stdev_ov
+            except Exception:
+                threshold = max(ov_vals)
+            outliers = [
+                (r["table_id"], r.get("n_raw_overlaps"), r.get("raw_cell_count"))
+                for r in overlap_records
+                if (r.get("n_raw_overlaps") or 0) > threshold
+            ]
+            if outliers:
+                print(f"  *** OUTLIERS (>mean+3stdev={threshold:.0f}):")
+                for tid, ov, nc in outliers:
+                    print(f"      {tid}: overlaps={ov}, cells={nc}")
+                ov_vals_no_outlier = [v for v in ov_vals if v <= threshold]
+                if ov_vals_no_outlier:
+                    mean_clean = sum(ov_vals_no_outlier) / len(ov_vals_no_outlier)
+                    median_clean = statistics.median(ov_vals_no_outlier)
+                    print(f"  Excluding outliers — mean: {mean_clean:.1f}, median: {median_clean:.1f}")
+
+        dup_records = [r for r in records if r.get("n_exact_duplicates") is not None]
+        if dup_records:
+            n_with_dups = sum(1 for r in dup_records if (r.get("n_exact_duplicates") or 0) > 0)
+            total_dups = sum((r.get("n_exact_duplicates") or 0) for r in dup_records)
+            n_dr = len(dup_records)
+            print(f"Tables with exact dup cells:     {n_with_dups}/{n_dr} ({100*n_with_dups/n_dr:.1f}%)")
+            print(f"Total exact dup cells:           {total_dups} (mean {total_dups/n_dr:.2f} per table)")
+
+    print(f"Report written to: {out_path}")
+    print(f"=======================================================\n")
+
 
 
 # --- 4. Extension point: run on a real PubTabNet sample --------------------
-def run_on_pubtabnet_folder(image_dir, iocr_json_dir, table_bboxes_by_image, config, save_dir):
+def run_on_pubtabnet_folder(
+    image_dir, iocr_json_dir, table_bboxes_by_image, config, save_dir,
+    device=None, out_csv=None,
+):
     """
     image_dir            : folder of table-crop PNGs
-    iocr_json_dir         : folder of matching IOCR-format JSONs (same shape as
-                             docling_api_data["table_jsons"] above -- if PubTabNet's
-                             own format differs, this is the piece to adapt)
+    iocr_json_dir         : folder of matching IOCR-format JSONs
     table_bboxes_by_image : {image_filename: [[x1,y1,x2,y2], ...]}
+    device               : 'cuda' or 'cpu' (auto-detected if None)
+    out_csv              : output CSV filename (default: pubtabnet_raw_consistency_report.csv)
     """
+    import torch
+
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    if out_csv is None:
+        out_csv = "pubtabnet_raw_consistency_report.csv"
+
     config["model"]["save_dir"] = save_dir
-    predictor = TFPredictor(config, device="cpu", num_threads=4)
+    print(f"Initializing TFPredictor on device: {device}...")
+    predictor = TFPredictor(config, device=device, num_threads=4)
 
     records = []
-    for img_name, bboxes in table_bboxes_by_image.items():
+    total_imgs = len(table_bboxes_by_image)
+
+    for idx, (img_name, bboxes) in enumerate(table_bboxes_by_image.items(), start=1):
         png_path = os.path.join(image_dir, img_name)
         json_path = os.path.join(iocr_json_dir, Path(img_name).stem + "_iocr.json")
 
@@ -306,8 +411,20 @@ def run_on_pubtabnet_folder(image_dir, iocr_json_dir, table_bboxes_by_image, con
                 predictor, iocr_page, tb, table_image, scale_factor, table_id
             )
             records.append(record)
+            print(
+                f"[{idx}/{total_imgs}] {table_id}: "
+                f"cells={record.get('raw_cell_count')}, "
+                f"square={record.get('otsl_square')}, "
+                f"sync={record.get('bbox_sync')}, "
+                f"overlaps={record.get('n_raw_overlaps')}, "
+                f"dups={record.get('n_exact_duplicates')}"
+            )
 
-    write_report(records, "pubtabnet_raw_consistency_report.csv")
+        # Incrementally flush report every 10 images
+        if idx % 10 == 0:
+            write_report(records, out_csv)
+
+    write_report(records, out_csv)
     return records
 
 

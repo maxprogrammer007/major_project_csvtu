@@ -134,6 +134,44 @@ All 100 tables re-run with `enable_post_process=True`. Post-repair overlap count
 
 **`_639579` overlap is real, not a boundary artefact:** post-repair cell id=52 (bbox `[4,154,53,159]`, area 245px²) is 100% contained within cell id=56 (bbox `[4,149,94,164]`). `_move_cells_to_left_pos` or `_align_table_cells_to_pdf` placed a narrow cell directly inside a taller neighbour during column realignment. GT for this table: 61 non-empty cells; raw=76, post=61 (post-repair cell count is exact GT match and achieves 100% precision and recall despite the one residual overlap).
 
+### The Token-Snapping Circularity: Why Post-Repair MedIoU = 1.000 is a Measurement Artifact
+
+A crucial methodological distinction must be drawn between **Raw IoU** and **Post-Repair IoU**:
+
+In `matching_post_processor.py`, `_align_table_cells_to_pdf()` (step 8a, lines 496–497) contains the explicit assignment:
+```python
+new_table_cell = table_cell.copy()
+new_table_cell["bbox"] = list(pdf_cell_bbox)
+```
+Because the OCR tokens in this run were generated directly from PubTabNet's ground-truth cell annotations (`html.cells[].bbox` in `_extract_iocr_tokens`), `pdf_cell_bbox` *is* the ground-truth bounding box. 
+
+Whenever a predicted cell is matched to a token, `MatchingPostProcessor` overwrites the model's predicted bounding box with the token's bounding box. Consequently:
+1. **Post-repair MedIoU = 1.000 is an artifact of the measurement setup:** It does *not* demonstrate that TableFormer's regression head predicted flawless coordinates. It is the direct algebraic consequence of `_align_table_cells_to_pdf` overwriting predicted coordinates with ground-truth coordinates.
+2. **TableFormer's true geometric precision is captured by the RAW metrics:** In the raw capture (`enable_post_process=False`), `_align_table_cells_to_pdf` does not run. The raw metrics represent TableFormer's actual, unassisted regression performance: a median IoU of **0.62–0.84** against ground truth, with frequent overlaps (57% of tables).
+3. **What post-repair Precision and Recall actually measure:**
+   Post-repair IoU matching does not evaluate coordinate precision; it evaluates **topological survival** — whether TableFormer generated a grid cell that `MatchingPostProcessor` could match to a ground-truth token without subsequently discarding it during column deduplication.
+4. **Why this strengthens the over-pruning finding:**
+   This circularity makes the failure of heuristic repair on `_629558` and `_722429` *more severe*, not less:
+   Even when `MatchingPostProcessor` is handed the *exact ground-truth tokens* to snap to:
+   - On `_629558`, its heuristic deduplication discarded 28 of the 34 real cells (collapsing recall to **17.6%**).
+   - On `_722429`, its deduplication deleted 3 genuine, correctly-detected cells (reducing recall from **58.7% down to 52.2%**).
+   The heuristic pipeline destroys genuine table content even under idealized token conditions.
+
+---
+
+## Post-Repair Recovery (Empirically Measured)
+
+All 100 tables re-run with `enable_post_process=True`. Post-repair overlap counts computed by `_analyze_raw_cells` on the actual `matching_details["table_cells"]` from the second predict() call.
+
+| Metric | Value |
+|:---|:---:|
+| Tables with raw overlaps | 57/100 |
+| Tables with post-repair overlaps | **4/100 (4.0%)** |
+| Fully recovered (raw > 0, post = 0) | **54/57 (94.7%)** |
+| Post-processor *introduced* new overlap | **1/100** (`_639579`: raw=0, post=1) |
+
+**`_639579` overlap is real, not a boundary artefact:** post-repair cell id=52 (bbox `[4,154,53,159]`, area 245px²) is 100% contained within cell id=56 (bbox `[4,149,94,164]`). `_move_cells_to_left_pos` or `_align_table_cells_to_pdf` placed a narrow cell directly inside a taller neighbour during column realignment. GT for this table: 61 non-empty cells; raw=76, post=61 (post-repair cell count is exact GT match and achieves 100% precision and recall despite the one residual overlap).
+
 ### Ordinary tables: 3/52 retain 1 residual overlap after repair
 - `_721570`: raw=9, post=1 (18 cells unchanged)  
 - `_722429`: raw=21, post=1 (40→29 cells; GT non-empty=46, so post is 37% below GT — verified recall drop from 58.7% to 52.2%)  
@@ -156,6 +194,7 @@ All 100 tables re-run with `enable_post_process=True`. Post-repair overlap count
 | Recovery framing | "5/5 recovered" (overlap=0), all via cell elimination | GT comparison: 4/5 catastrophic tables within 10-30% of GT; only _629558 is true collapse |
 | "Massive cell elimination" characterisation | Applied to all 5 catastrophic tables | Accurate only for _629558; other 4 are overlap-only failures |
 | Count agreement as correctness proxy | len(pred) == len(gt) treated as proof of success | Bipartite IoU matching confirms exact structural match for _670433 (100% F1), but severe recall collapse (17.6%) for _629558 and over-pruning for _722429 |
+| Post-repair MedIoU = 1.000 interpreted as geometric accuracy | Treated as evidence of flawless model coordinate prediction | Identified as artifact of `_align_table_cells_to_pdf` overwriting predicted bboxes with GT-derived token bboxes (`new_table_cell["bbox"] = list(pdf_cell_bbox)`); raw MedIoU (0.62–0.84) represents true model geometry |
 
 Each correction verified against source or by direct measurement before being accepted.
 

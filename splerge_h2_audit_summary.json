@@ -1,0 +1,51 @@
+{
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "raw_grid": {
+    "total_cells": 7069,
+    "internal_overlaps": 0,
+    "tp_25": 1833,
+    "recall_25": 0.3247,
+    "precision_25": 0.2593,
+    "f1_25": 0.2883,
+    "tp_50": 264,
+    "recall_50": 0.0468
+  },
+  "heuristic_merge": {
+    "total_cells": 4333,
+    "internal_overlaps": 0,
+    "tp_25": 1203,
+    "recall_25": 0.2131,
+    "precision_25": 0.2776,
+    "f1_25": 0.2411,
+    "tp_50": 144,
+    "recall_50": 0.0255,
+    "destroyed_tp_25": 634,
+    "destroyed_pct_25": 34.59
+  },
+  "h2_set_packing": {
+    "total_cells": 7005,
+    "internal_overlaps": 0,
+    "tp_25": 1836,
+    "recall_25": 0.3252,
+    "precision_25": 0.2621,
+    "f1_25": 0.2903,
+    "tp_50": 274,
+    "recall_50": 0.0485,
+    "net_tp_gain_over_heur": 633,
+    "destroyed_tps_recovered": 632,
+    "recovery_rate_pct": 99.68,
+    "table_outcomes_vs_heuristic": {
+      "tables_improved": 74,
+      "tables_tied": 26,
+      "tables_degraded": 0
+    },
+    "solver_runtime_ms": {
+      "mean": 98.22,
+      "median": 37.68,
+      "min": 3.25,
+      "max": 718.55,
+      "p95": 358.79
+    }
+  }
+}

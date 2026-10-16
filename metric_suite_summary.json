@@ -1,0 +1,261 @@
+{
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "conditions": {
+    "raw": {
+      "total_tp": 1833,
+      "mean_rec": 0.3381,
+      "mean_prec": 0.2716,
+      "mean_f1": 0.2842,
+      "mean_teds_s": 0.668,
+      "mean_grits_top": 0.7575
+    },
+    "h1_gt": {
+      "total_tp": 1203,
+      "mean_rec": 0.2306,
+      "mean_prec": 0.2738,
+      "mean_f1": 0.2411,
+      "mean_teds_s": 0.6888,
+      "mean_grits_top": 0.7633,
+      "mean_grits_con": 0.6042,
+      "mean_teds_full": 0.5152
+    },
+    "h1_ocr": {
+      "total_tp": 1336,
+      "mean_rec": 0.2602,
+      "mean_prec": 0.2789,
+      "mean_f1": 0.2629,
+      "mean_teds_s": 0.7318,
+      "mean_grits_top": 0.7908,
+      "mean_grits_con": 0.0825,
+      "mean_teds_full": 0.2648
+    },
+    "h2_gt": {
+      "total_tp": 1839,
+      "mean_rec": 0.3396,
+      "mean_prec": 0.2768,
+      "mean_f1": 0.2882,
+      "mean_teds_s": 0.6733,
+      "mean_grits_top": 0.7594,
+      "mean_grits_con": 0.6212,
+      "mean_teds_full": 0.4784,
+      "mean_solve_ms": 61.63
+    },
+    "h2_ocr": {
+      "total_tp": 1836,
+      "mean_rec": 0.3396,
+      "mean_prec": 0.2749,
+      "mean_f1": 0.2872,
+      "mean_teds_s": 0.6725,
+      "mean_grits_top": 0.7605,
+      "mean_grits_con": 0.1158,
+      "mean_teds_full": 0.208,
+      "mean_solve_ms": 60.31
+    },
+    "h2_greedy_gt": {
+      "total_tp": 495,
+      "mean_rec": 0.1059,
+      "mean_prec": 0.1257,
+      "mean_f1": 0.1062,
+      "mean_teds_s": 0.4103,
+      "mean_grits_top": 0.5551
+    },
+    "h2_greedy_ocr": {
+      "total_tp": 504,
+      "mean_rec": 0.1068,
+      "mean_prec": 0.1315,
+      "mean_f1": 0.1074,
+      "mean_teds_s": 0.423,
+      "mean_grits_top": 0.5629
+    }
+  },
+  "paired_tests": {
+    "confirmatory_teds_s_h2ocr_vs_h1ocr": {
+      "mean_delta": -0.0593,
+      "std_delta": 0.2036,
+      "paired_t_stat": -2.9146,
+      "p_ttest": 0.004403773919804194,
+      "wilcoxon_stat": 1328.0,
+      "p_wilcoxon": 0.00246335425031614,
+      "bootstrap_ci95": [
+        -0.0973,
+        -0.017
+      ],
+      "wlt": {
+        "wins": 34,
+        "ties": 9,
+        "losses": 57
+      }
+    },
+    "confirmatory_grits_top_h2ocr_vs_h1ocr": {
+      "mean_delta": -0.0303,
+      "std_delta": 0.1575,
+      "paired_t_stat": -1.9254,
+      "p_ttest": 0.05704428064884071,
+      "wilcoxon_stat": 1385.0,
+      "p_wilcoxon": 0.01711743966797878,
+      "bootstrap_ci95": [
+        -0.0588,
+        0.0026
+      ],
+      "wlt": {
+        "wins": 34,
+        "ties": 12,
+        "losses": 54
+      }
+    },
+    "confirmatory_tp_h2ocr_vs_h1ocr": {
+      "mean_delta": 5.0,
+      "std_delta": 7.5022,
+      "paired_t_stat": 6.6647,
+      "p_ttest": 1.5150071693410418e-09,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 2.2296310271760634e-13,
+      "bootstrap_ci95": [
+        3.6098,
+        6.48
+      ],
+      "wlt": {
+        "wins": 71,
+        "ties": 29,
+        "losses": 0
+      }
+    },
+    "exploratory_teds_s_h2gt_vs_h1gt": {
+      "mean_delta": -0.0155,
+      "std_delta": 0.2015,
+      "paired_t_stat": -0.7693,
+      "p_ttest": 0.4435342045588282,
+      "wilcoxon_stat": 1914.0,
+      "p_wilcoxon": 0.3809580316581268,
+      "bootstrap_ci95": [
+        -0.0549,
+        0.0249
+      ],
+      "wlt": {
+        "wins": 42,
+        "ties": 8,
+        "losses": 50
+      }
+    },
+    "exploratory_grits_top_h2gt_vs_h1gt": {
+      "mean_delta": -0.0039,
+      "std_delta": 0.1535,
+      "paired_t_stat": -0.2516,
+      "p_ttest": 0.8018497051936349,
+      "wilcoxon_stat": 1915.5,
+      "p_wilcoxon": 0.5953293413135392,
+      "bootstrap_ci95": [
+        -0.0329,
+        0.0264
+      ],
+      "wlt": {
+        "wins": 42,
+        "ties": 10,
+        "losses": 48
+      }
+    },
+    "exploratory_teds_s_h2ilp_vs_greedy_gt": {
+      "mean_delta": 0.2631,
+      "std_delta": 0.1947,
+      "paired_t_stat": 13.5088,
+      "p_ttest": 3.3925453724499736e-24,
+      "wilcoxon_stat": 111.0,
+      "p_wilcoxon": 1.0399353250656739e-16,
+      "bootstrap_ci95": [
+        0.226,
+        0.2996
+      ],
+      "wlt": {
+        "wins": 91,
+        "ties": 0,
+        "losses": 9
+      }
+    },
+    "exploratory_grits_top_h2ilp_vs_greedy_gt": {
+      "mean_delta": 0.2043,
+      "std_delta": 0.1051,
+      "paired_t_stat": 19.4418,
+      "p_ttest": 1.4138056121551528e-35,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 2.6048126998716865e-17,
+      "bootstrap_ci95": [
+        0.1828,
+        0.2243
+      ],
+      "wlt": {
+        "wins": 95,
+        "ties": 5,
+        "losses": 0
+      }
+    },
+    "exploratory_teds_s_h2ilp_vs_greedy_ocr": {
+      "mean_delta": 0.2495,
+      "std_delta": 0.1895,
+      "paired_t_stat": 13.1671,
+      "p_ttest": 1.745860715461606e-23,
+      "wilcoxon_stat": 145.0,
+      "p_wilcoxon": 2.763182342201725e-16,
+      "bootstrap_ci95": [
+        0.2136,
+        0.2857
+      ],
+      "wlt": {
+        "wins": 90,
+        "ties": 0,
+        "losses": 10
+      }
+    },
+    "exploratory_grits_top_h2ilp_vs_greedy_ocr": {
+      "mean_delta": 0.1976,
+      "std_delta": 0.104,
+      "paired_t_stat": 19.0051,
+      "p_ttest": 8.370598076974701e-35,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 1.7809667875440116e-17,
+      "bootstrap_ci95": [
+        0.1768,
+        0.2174
+      ],
+      "wlt": {
+        "wins": 96,
+        "ties": 4,
+        "losses": 0
+      }
+    },
+    "within_token_grits_con_h2gt_vs_h1gt": {
+      "mean_delta": 0.017,
+      "std_delta": 0.1537,
+      "paired_t_stat": 1.1051,
+      "p_ttest": 0.27180330235757355,
+      "wilcoxon_stat": 1932.0,
+      "p_wilcoxon": 0.5239784754338281,
+      "bootstrap_ci95": [
+        -0.0118,
+        0.0486
+      ],
+      "wlt": {
+        "wins": 47,
+        "ties": 9,
+        "losses": 44
+      }
+    },
+    "within_token_grits_con_h2ocr_vs_h1ocr": {
+      "mean_delta": 0.0334,
+      "std_delta": 0.064,
+      "paired_t_stat": 5.2144,
+      "p_ttest": 1.0116926732173425e-06,
+      "wilcoxon_stat": 945.0,
+      "p_wilcoxon": 1.5144337300715114e-05,
+      "bootstrap_ci95": [
+        0.0212,
+        0.0464
+      ],
+      "wlt": {
+        "wins": 52,
+        "ties": 11,
+        "losses": 37
+      }
+    }
+  }
+}

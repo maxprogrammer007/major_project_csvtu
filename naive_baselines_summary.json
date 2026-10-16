@@ -1,0 +1,28 @@
+{
+  "experiment": "Naive Baselines + Greedy + Exact (SPLERGE)",
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "random_seeds": 100,
+  "baseline_ladder": {
+    "heuristic": {
+      "tp": 1203,
+      "recall_pct": 21.31
+    },
+    "random_mean": {
+      "tp": 839.3,
+      "recall_pct": 14.87
+    },
+    "raw_elem_only": {
+      "tp": 1833,
+      "recall_pct": 32.47
+    },
+    "greedy_same_obj": {
+      "tp": 566,
+      "recall_pct": 10.02
+    },
+    "exact_ilp": {
+      "tp": 1836,
+      "recall_pct": 32.52
+    }
+  }
+}

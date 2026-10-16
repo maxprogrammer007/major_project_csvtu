@@ -1,0 +1,15 @@
+{
+  "n_tables": 10,
+  "ocr_backend": "opencv",
+  "gt_cells": 691,
+  "raw_tp": 257,
+  "h1gt_tp": 163,
+  "h1ocr_tp": 195,
+  "h2gt_tp": 257,
+  "h2ocr_tp": 255,
+  "oracle_gap": 2,
+  "h2ocr_vs_raw": -2,
+  "h2ocr_vs_h1ocr": 60,
+  "mean_ocr_recall": 0.3124,
+  "mean_ocr_prec": 0.083
+}

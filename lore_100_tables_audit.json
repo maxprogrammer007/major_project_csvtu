@@ -1,0 +1,13 @@
+{
+  "total_tables": 100,
+  "total_gt": 5646,
+  "total_pred": 1778,
+  "total_tp": 1761,
+  "precision": 0.9904386951631046,
+  "recall": 0.31190223166843783,
+  "f1": 0.47440732758620685,
+  "pred_to_gt_ratio": 0.3149132128940843,
+  "tables_with_any_suppression": 0,
+  "tables_with_suprathresh_suppression": 0,
+  "suppression_details": []
+}

@@ -1,0 +1,49 @@
+{
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "raw_grid": {
+    "total_cells": 7069,
+    "total_overlaps": 0,
+    "overlap_rate": 0.0,
+    "iou_05": {
+      "tp": 264,
+      "precision": 0.0373,
+      "recall": 0.0468,
+      "f1": 0.0415
+    },
+    "iou_025": {
+      "tp": 1833,
+      "precision": 0.2593,
+      "recall": 0.3247,
+      "f1": 0.2883
+    }
+  },
+  "post_merge": {
+    "total_cells": 4333,
+    "total_overlaps": 0,
+    "overlap_rate": 0.0,
+    "iou_05": {
+      "tp": 144,
+      "precision": 0.0332,
+      "recall": 0.0255,
+      "f1": 0.0289
+    },
+    "iou_025": {
+      "tp": 1203,
+      "precision": 0.2776,
+      "recall": 0.2131,
+      "f1": 0.2411
+    }
+  },
+  "destructive_repair_impact": {
+    "cell_reduction": -2736,
+    "delta_tp_50": -120,
+    "delta_tp_25": -630,
+    "gross_destroyed_tp_50": 124,
+    "gross_destroyed_tp_25": 634,
+    "destruction_rate_25": 0.3459,
+    "tables_tp_decreased": 72,
+    "tables_tp_increased": 0,
+    "tables_tp_unchanged": 28
+  }
+}

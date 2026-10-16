@@ -1,0 +1,54 @@
+{
+  "table_id": "pubtabnet_tok_554187",
+  "grid_dimensions": {
+    "rows": 28,
+    "cols": 3,
+    "tiles": 84
+  },
+  "candidates_total": 299,
+  "solver_runtime_ms": 63.83640004787594,
+  "raw_grid": {
+    "cells": 84,
+    "overlaps": 0,
+    "tp_25": 70,
+    "rec_25": 0.9722222222222222
+  },
+  "heuristic_merge": {
+    "cells": 49,
+    "overlaps": 0,
+    "tp_25": 38,
+    "rec_25": 0.5277777777777778
+  },
+  "h2_set_packing": {
+    "cells": 79,
+    "overlaps": 0,
+    "tp_25": 70,
+    "rec_25": 0.9722222222222222,
+    "tp_50": 19,
+    "rec_50": 0.2638888888888889,
+    "recovered_tps": 32,
+    "recovery_rate_pct": 100.0
+  },
+  "flagship_verification": {
+    "PCa-004": {
+      "raw_iou": 0.4679245283018868,
+      "heuristic_iou": 0.1987179487179487,
+      "h2_opt_iou": 0.4679245283018868
+    },
+    "AY341247.1": {
+      "raw_iou": 0.37269772481040087,
+      "heuristic_iou": 0.15412186379928317,
+      "h2_opt_iou": 0.37269772481040087
+    },
+    "PCa-005": {
+      "raw_iou": 0.4261168384879725,
+      "heuristic_iou": 0.1987179487179487,
+      "h2_opt_iou": 0.4261168384879725
+    },
+    "AC104771.4": {
+      "raw_iou": 0.34577603143418467,
+      "heuristic_iou": 0.15770609318996415,
+      "h2_opt_iou": 0.34577603143418467
+    }
+  }
+}

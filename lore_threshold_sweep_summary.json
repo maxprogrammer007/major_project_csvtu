@@ -1,0 +1,108 @@
+{
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "default_threshold": 0.35,
+  "sweep": [
+    {
+      "tau": 0.01,
+      "pred_count": 9756,
+      "tp_recovered": 5180,
+      "fp_growth": 4576,
+      "fn": 466,
+      "precision": 0.531,
+      "recall": 0.9175,
+      "f1": 0.6726
+    },
+    {
+      "tau": 0.05,
+      "pred_count": 5983,
+      "tp_recovered": 5180,
+      "fp_growth": 803,
+      "fn": 466,
+      "precision": 0.8658,
+      "recall": 0.9175,
+      "f1": 0.8909
+    },
+    {
+      "tau": 0.1,
+      "pred_count": 5313,
+      "tp_recovered": 5180,
+      "fp_growth": 133,
+      "fn": 466,
+      "precision": 0.975,
+      "recall": 0.9175,
+      "f1": 0.9453
+    },
+    {
+      "tau": 0.15,
+      "pred_count": 5246,
+      "tp_recovered": 5176,
+      "fp_growth": 70,
+      "fn": 470,
+      "precision": 0.9867,
+      "recall": 0.9168,
+      "f1": 0.9504
+    },
+    {
+      "tau": 0.2,
+      "pred_count": 5153,
+      "tp_recovered": 5111,
+      "fp_growth": 42,
+      "fn": 535,
+      "precision": 0.9918,
+      "recall": 0.9052,
+      "f1": 0.9466
+    },
+    {
+      "tau": 0.25,
+      "pred_count": 4276,
+      "tp_recovered": 4250,
+      "fp_growth": 26,
+      "fn": 1396,
+      "precision": 0.9939,
+      "recall": 0.7527,
+      "f1": 0.8567
+    },
+    {
+      "tau": 0.3,
+      "pred_count": 2965,
+      "tp_recovered": 2944,
+      "fp_growth": 21,
+      "fn": 2702,
+      "precision": 0.9929,
+      "recall": 0.5214,
+      "f1": 0.6838
+    },
+    {
+      "tau": 0.35,
+      "pred_count": 1778,
+      "tp_recovered": 1761,
+      "fp_growth": 17,
+      "fn": 3885,
+      "precision": 0.9904,
+      "recall": 0.3119,
+      "f1": 0.4744
+    },
+    {
+      "tau": 0.4,
+      "pred_count": 1385,
+      "tp_recovered": 1368,
+      "fp_growth": 17,
+      "fn": 4278,
+      "precision": 0.9877,
+      "recall": 0.2423,
+      "f1": 0.3891
+    },
+    {
+      "tau": 0.5,
+      "pred_count": 1371,
+      "tp_recovered": 1357,
+      "fp_growth": 14,
+      "fn": 4289,
+      "precision": 0.9898,
+      "recall": 0.2403,
+      "f1": 0.3868
+    }
+  ],
+  "key_finding": "Lowering tau from 0.35 to 0.01 increases recovered TPs (from 1761 to 5180), but triggers an explosive growth in False Positives (from 17 to 4576), collapsing Precision from 99.0% down to 53.1%. This empirical result refutes the claim that lower detection thresholds can solve CenterNet under-segmentation without severe precision decay."
+}

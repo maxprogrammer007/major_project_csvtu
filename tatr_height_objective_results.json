@@ -1,0 +1,902 @@
+[
+  {
+    "table_id": "PMC1084345_table_1",
+    "gt_rows": 25,
+    "raw_tp": 25,
+    "heur_tp": 25,
+    "opt_tp": 25,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC1187882_table_1",
+    "gt_rows": 14,
+    "raw_tp": 14,
+    "heur_tp": 14,
+    "opt_tp": 14,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC1523215_table_0",
+    "gt_rows": 7,
+    "raw_tp": 7,
+    "heur_tp": 7,
+    "opt_tp": 7,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC1533846_table_2",
+    "gt_rows": 26,
+    "raw_tp": 26,
+    "heur_tp": 26,
+    "opt_tp": 26,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC1831789_table_0",
+    "gt_rows": 11,
+    "raw_tp": 11,
+    "heur_tp": 11,
+    "opt_tp": 11,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC1887537_table_2",
+    "gt_rows": 15,
+    "raw_tp": 15,
+    "heur_tp": 15,
+    "opt_tp": 15,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2656531_table_1",
+    "gt_rows": 11,
+    "raw_tp": 11,
+    "heur_tp": 11,
+    "opt_tp": 11,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2684100_table_0",
+    "gt_rows": 7,
+    "raw_tp": 7,
+    "heur_tp": 7,
+    "opt_tp": 7,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2729469_table_0",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2747266_table_3",
+    "gt_rows": 12,
+    "raw_tp": 12,
+    "heur_tp": 12,
+    "opt_tp": 12,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2839521_table_1",
+    "gt_rows": 10,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2896379_table_0",
+    "gt_rows": 11,
+    "raw_tp": 11,
+    "heur_tp": 11,
+    "opt_tp": 11,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2958935_table_0",
+    "gt_rows": 22,
+    "raw_tp": 22,
+    "heur_tp": 22,
+    "opt_tp": 22,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2960542_table_0",
+    "gt_rows": 10,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2968173_table_3",
+    "gt_rows": 5,
+    "raw_tp": 5,
+    "heur_tp": 5,
+    "opt_tp": 5,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2968275_table_1",
+    "gt_rows": 24,
+    "raw_tp": 24,
+    "heur_tp": 24,
+    "opt_tp": 24,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2969249_table_1",
+    "gt_rows": 14,
+    "raw_tp": 14,
+    "heur_tp": 14,
+    "opt_tp": 14,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2971981_table_0",
+    "gt_rows": 11,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC2983965_table_2",
+    "gt_rows": 19,
+    "raw_tp": 19,
+    "heur_tp": 19,
+    "opt_tp": 19,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3052110_table_0",
+    "gt_rows": 10,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3079627_table_0",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3120320_table_0",
+    "gt_rows": 10,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3287565_table_1",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3408356_table_4",
+    "gt_rows": 3,
+    "raw_tp": 3,
+    "heur_tp": 3,
+    "opt_tp": 3,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3430698_table_0",
+    "gt_rows": 21,
+    "raw_tp": 21,
+    "heur_tp": 21,
+    "opt_tp": 21,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3430698_table_1",
+    "gt_rows": 13,
+    "raw_tp": 13,
+    "heur_tp": 13,
+    "opt_tp": 13,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3443208_table_1",
+    "gt_rows": 28,
+    "raw_tp": 28,
+    "heur_tp": 28,
+    "opt_tp": 28,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3504048_table_0",
+    "gt_rows": 12,
+    "raw_tp": 12,
+    "heur_tp": 12,
+    "opt_tp": 12,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3508915_table_0",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3509135_table_0",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3527341_table_0",
+    "gt_rows": 17,
+    "raw_tp": 17,
+    "heur_tp": 17,
+    "opt_tp": 17,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3551717_table_2",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3556497_table_2",
+    "gt_rows": 13,
+    "raw_tp": 13,
+    "heur_tp": 13,
+    "opt_tp": 13,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3569413_table_2",
+    "gt_rows": 16,
+    "raw_tp": 16,
+    "heur_tp": 16,
+    "opt_tp": 16,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3588972_table_3",
+    "gt_rows": 5,
+    "raw_tp": 5,
+    "heur_tp": 5,
+    "opt_tp": 5,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3617032_table_2",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3629524_table_1",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3691733_table_4",
+    "gt_rows": 16,
+    "raw_tp": 16,
+    "heur_tp": 16,
+    "opt_tp": 16,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC3693659_table_0",
+    "gt_rows": 7,
+    "raw_tp": 7,
+    "heur_tp": 7,
+    "opt_tp": 7,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4365023_table_1",
+    "gt_rows": 13,
+    "raw_tp": 13,
+    "heur_tp": 13,
+    "opt_tp": 13,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4370678_table_1",
+    "gt_rows": 7,
+    "raw_tp": 7,
+    "heur_tp": 7,
+    "opt_tp": 7,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4373323_table_0",
+    "gt_rows": 22,
+    "raw_tp": 22,
+    "heur_tp": 22,
+    "opt_tp": 22,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4397089_table_0",
+    "gt_rows": 21,
+    "raw_tp": 18,
+    "heur_tp": 17,
+    "opt_tp": 17,
+    "heur_destroyed": 1,
+    "opt_destroyed": 1
+  },
+  {
+    "table_id": "PMC4398684_table_0",
+    "gt_rows": 21,
+    "raw_tp": 21,
+    "heur_tp": 21,
+    "opt_tp": 21,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4410739_table_2",
+    "gt_rows": 15,
+    "raw_tp": 15,
+    "heur_tp": 15,
+    "opt_tp": 15,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4414600_table_2",
+    "gt_rows": 17,
+    "raw_tp": 17,
+    "heur_tp": 17,
+    "opt_tp": 17,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4429321_table_0",
+    "gt_rows": 16,
+    "raw_tp": 16,
+    "heur_tp": 16,
+    "opt_tp": 16,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4459231_table_0",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4460747_table_0",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4480757_table_0",
+    "gt_rows": 12,
+    "raw_tp": 12,
+    "heur_tp": 12,
+    "opt_tp": 12,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4496067_table_3",
+    "gt_rows": 32,
+    "raw_tp": 32,
+    "heur_tp": 32,
+    "opt_tp": 32,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4531240_table_1",
+    "gt_rows": 9,
+    "raw_tp": 9,
+    "heur_tp": 9,
+    "opt_tp": 9,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4560419_table_2",
+    "gt_rows": 15,
+    "raw_tp": 15,
+    "heur_tp": 15,
+    "opt_tp": 15,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4584314_table_0",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4590902_table_0",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4632475_table_1",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4650288_table_0",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4783330_table_1",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4806622_table_0",
+    "gt_rows": 5,
+    "raw_tp": 5,
+    "heur_tp": 5,
+    "opt_tp": 5,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4817971_table_2",
+    "gt_rows": 23,
+    "raw_tp": 23,
+    "heur_tp": 23,
+    "opt_tp": 23,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4838882_table_1",
+    "gt_rows": 17,
+    "raw_tp": 17,
+    "heur_tp": 17,
+    "opt_tp": 17,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4840909_table_0",
+    "gt_rows": 9,
+    "raw_tp": 9,
+    "heur_tp": 9,
+    "opt_tp": 9,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4881214_table_5",
+    "gt_rows": 5,
+    "raw_tp": 5,
+    "heur_tp": 5,
+    "opt_tp": 5,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4910256_table_0",
+    "gt_rows": 12,
+    "raw_tp": 12,
+    "heur_tp": 12,
+    "opt_tp": 12,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4915688_table_2",
+    "gt_rows": 9,
+    "raw_tp": 9,
+    "heur_tp": 9,
+    "opt_tp": 9,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4954800_table_11",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC4962420_table_0",
+    "gt_rows": 47,
+    "raw_tp": 42,
+    "heur_tp": 41,
+    "opt_tp": 41,
+    "heur_destroyed": 1,
+    "opt_destroyed": 1
+  },
+  {
+    "table_id": "PMC4973968_table_2",
+    "gt_rows": 14,
+    "raw_tp": 14,
+    "heur_tp": 14,
+    "opt_tp": 14,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5031790_table_0",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5051174_table_0",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5055877_table_0",
+    "gt_rows": 7,
+    "raw_tp": 7,
+    "heur_tp": 7,
+    "opt_tp": 7,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5064365_table_1",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5072691_table_1",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5080752_table_0",
+    "gt_rows": 13,
+    "raw_tp": 13,
+    "heur_tp": 13,
+    "opt_tp": 13,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5087912_table_1",
+    "gt_rows": 4,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5142432_table_1",
+    "gt_rows": 17,
+    "raw_tp": 17,
+    "heur_tp": 17,
+    "opt_tp": 17,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5669531_table_6",
+    "gt_rows": 5,
+    "raw_tp": 4,
+    "heur_tp": 4,
+    "opt_tp": 4,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5700706_table_5",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5732220_table_1",
+    "gt_rows": 7,
+    "raw_tp": 7,
+    "heur_tp": 7,
+    "opt_tp": 7,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5762819_table_1",
+    "gt_rows": 30,
+    "raw_tp": 30,
+    "heur_tp": 30,
+    "opt_tp": 29,
+    "heur_destroyed": 0,
+    "opt_destroyed": 1
+  },
+  {
+    "table_id": "PMC5780429_table_0",
+    "gt_rows": 13,
+    "raw_tp": 13,
+    "heur_tp": 13,
+    "opt_tp": 13,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5796220_table_0",
+    "gt_rows": 27,
+    "raw_tp": 27,
+    "heur_tp": 27,
+    "opt_tp": 27,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5823428_table_3",
+    "gt_rows": 16,
+    "raw_tp": 16,
+    "heur_tp": 16,
+    "opt_tp": 16,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5832219_table_5",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5857116_table_3",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5861438_table_0",
+    "gt_rows": 10,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5863466_table_1",
+    "gt_rows": 21,
+    "raw_tp": 21,
+    "heur_tp": 21,
+    "opt_tp": 21,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5870183_table_4",
+    "gt_rows": 11,
+    "raw_tp": 11,
+    "heur_tp": 11,
+    "opt_tp": 11,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5872599_table_6",
+    "gt_rows": 6,
+    "raw_tp": 6,
+    "heur_tp": 6,
+    "opt_tp": 6,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5897469_table_0",
+    "gt_rows": 30,
+    "raw_tp": 30,
+    "heur_tp": 30,
+    "opt_tp": 29,
+    "heur_destroyed": 0,
+    "opt_destroyed": 1
+  },
+  {
+    "table_id": "PMC5921538_table_0",
+    "gt_rows": 12,
+    "raw_tp": 12,
+    "heur_tp": 12,
+    "opt_tp": 12,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC5965211_table_0",
+    "gt_rows": 12,
+    "raw_tp": 12,
+    "heur_tp": 12,
+    "opt_tp": 12,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6005574_table_1",
+    "gt_rows": 16,
+    "raw_tp": 16,
+    "heur_tp": 16,
+    "opt_tp": 16,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6010765_table_0",
+    "gt_rows": 21,
+    "raw_tp": 21,
+    "heur_tp": 21,
+    "opt_tp": 21,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6023012_table_0",
+    "gt_rows": 5,
+    "raw_tp": 5,
+    "heur_tp": 5,
+    "opt_tp": 5,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6069571_table_0",
+    "gt_rows": 10,
+    "raw_tp": 10,
+    "heur_tp": 10,
+    "opt_tp": 10,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6117221_table_0",
+    "gt_rows": 8,
+    "raw_tp": 8,
+    "heur_tp": 8,
+    "opt_tp": 8,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6127715_table_0",
+    "gt_rows": 42,
+    "raw_tp": 42,
+    "heur_tp": 37,
+    "opt_tp": 40,
+    "heur_destroyed": 5,
+    "opt_destroyed": 2
+  },
+  {
+    "table_id": "PMC6151373_table_0",
+    "gt_rows": 9,
+    "raw_tp": 9,
+    "heur_tp": 9,
+    "opt_tp": 9,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  },
+  {
+    "table_id": "PMC6231098_table_1",
+    "gt_rows": 5,
+    "raw_tp": 5,
+    "heur_tp": 5,
+    "opt_tp": 5,
+    "heur_destroyed": 0,
+    "opt_destroyed": 0
+  }
+]

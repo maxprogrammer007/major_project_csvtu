@@ -1,0 +1,87 @@
+{
+  "total_gt": 5646,
+  "raw_tp": 5204,
+  "post_tp": 5488,
+  "sweep": [
+    {
+      "name": "Strict Planar (intersection > 0)",
+      "criterion": "strict_inter",
+      "param": 0.0,
+      "mwis_tp": 5014,
+      "vs_raw": -190,
+      "recovered_vs_strict": 0
+    },
+    {
+      "name": "Overlap / min_area > 0.01 (1% bleed tolerance)",
+      "criterion": "inter_over_min_area",
+      "param": 0.01,
+      "mwis_tp": 5043,
+      "vs_raw": -161,
+      "recovered_vs_strict": 29
+    },
+    {
+      "name": "Overlap / min_area > 0.05 (5% bleed tolerance)",
+      "criterion": "inter_over_min_area",
+      "param": 0.05,
+      "mwis_tp": 5133,
+      "vs_raw": -71,
+      "recovered_vs_strict": 119
+    },
+    {
+      "name": "Overlap / min_area > 0.10 (10% bleed tolerance)",
+      "criterion": "inter_over_min_area",
+      "param": 0.1,
+      "mwis_tp": 5174,
+      "vs_raw": -30,
+      "recovered_vs_strict": 160
+    },
+    {
+      "name": "Overlap / min_area > 0.20 (20% bleed tolerance)",
+      "criterion": "inter_over_min_area",
+      "param": 0.2,
+      "mwis_tp": 5193,
+      "vs_raw": -11,
+      "recovered_vs_strict": 179
+    },
+    {
+      "name": "Overlap / min_area > 0.50 (TATR parity, 50% overlap)",
+      "criterion": "inter_over_min_area",
+      "param": 0.5,
+      "mwis_tp": 5202,
+      "vs_raw": -2,
+      "recovered_vs_strict": 188
+    },
+    {
+      "name": "IoU > 0.05",
+      "criterion": "iou",
+      "param": 0.05,
+      "mwis_tp": 5177,
+      "vs_raw": -27,
+      "recovered_vs_strict": 163
+    },
+    {
+      "name": "IoU > 0.10",
+      "criterion": "iou",
+      "param": 0.1,
+      "mwis_tp": 5196,
+      "vs_raw": -8,
+      "recovered_vs_strict": 182
+    },
+    {
+      "name": "IoU > 0.30",
+      "criterion": "iou",
+      "param": 0.3,
+      "mwis_tp": 5202,
+      "vs_raw": -2,
+      "recovered_vs_strict": 188
+    },
+    {
+      "name": "IoU > 0.50 (Standard NMS IoU)",
+      "criterion": "iou",
+      "param": 0.5,
+      "mwis_tp": 5203,
+      "vs_raw": -1,
+      "recovered_vs_strict": 189
+    }
+  ]
+}

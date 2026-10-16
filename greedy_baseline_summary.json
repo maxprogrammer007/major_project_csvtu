@@ -1,0 +1,84 @@
+{
+  "experiment": "Greedy vs Exact Baseline (SPLERGE, 20 randomized tie-break seeds)",
+  "unit_test": {
+    "identity_unit_test": "PASSED on all tables",
+    "tables_tested": 100,
+    "description": "Conflict edge set E of greedy identically matches A_sparse^T @ A_sparse > 0 of ILP."
+  },
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "aggregate": {
+    "raw": {
+      "cells": 7069,
+      "tp25": 1833,
+      "rec25": 32.47
+    },
+    "heur": {
+      "cells": 4333,
+      "tp25": 1203,
+      "rec25": 21.31
+    },
+    "exact": {
+      "cells": 7005,
+      "tp25": 1836,
+      "rec25": 32.52
+    },
+    "greedy": {
+      "cells_mean": 5026.4,
+      "tp25_mean": 710.8,
+      "tp25_std": 12.9,
+      "tp25_min": 674,
+      "tp25_max": 733,
+      "rec25_mean": 12.59,
+      "per_seed_totals": [
+        698,
+        733,
+        705,
+        712,
+        702,
+        728,
+        714,
+        705,
+        696,
+        703,
+        706,
+        674,
+        718,
+        722,
+        718,
+        715,
+        718,
+        705,
+        722,
+        721
+      ]
+    }
+  },
+  "exact_vs_greedy": {
+    "win_loss_tie_mean": {
+      "wins": 88,
+      "ties": 12,
+      "losses": 0
+    },
+    "net_tp_gain_mean": 1125.2,
+    "net_tp_gain_range": [
+      1103,
+      1162
+    ],
+    "mean_delta_per_table": 11.2525,
+    "paired_t_stat": 7.5285,
+    "paired_t_pvalue": 0.0,
+    "wilcoxon_W": 0.0,
+    "wilcoxon_pvalue": 0.0,
+    "bootstrap_95CI": [
+      8.484,
+      14.362
+    ]
+  },
+  "solve_time_ms": {
+    "exact_mean_ms": 98.09,
+    "exact_median_ms": 34.79,
+    "exact_p95_ms": 376.85,
+    "greedy_mean_ms": 1.13
+  }
+}

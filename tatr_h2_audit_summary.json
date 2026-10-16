@@ -1,0 +1,11 @@
+{
+    "tables_evaluated": 100,
+    "total_gt_rows": 1261,
+    "raw_tp": 1251,
+    "heur_tp": 1244,
+    "opt_tp": 1245,
+    "heur_destroyed": 7,
+    "opt_recovered": 1,
+    "mean_solve_ms": 0.6920079991687089,
+    "max_solve_ms": 38.81469997577369
+}

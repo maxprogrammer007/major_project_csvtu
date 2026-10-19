@@ -28,13 +28,14 @@ This evaluation yielded two distinct, carefully delineated conclusions:
 | Evaluation State | Total Predicted Cells | TP ($\text{IoU} \ge 0.50$) | Recall | Precision | $\text{F}_1$ Score | vs. Raw TP |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **1. Raw Regressed Boxes** | 6,009 | 5,204 | 92.17% | 86.60% | 89.30% | — |
-| **2. Heuristic Repair (`MatchingPostProcessor`)** | 5,502 | 5,488† | 97.20% | 99.75% | 98.46% | +284 |
+| **2a. Honest De-Snapped Heuristic Repair** | 5,502 | 5,082 | 89.99% | 92.37% | 91.16% | -122 |
+| **2b. Circular Snapped Pipeline (`MatchingPostProcessor`)** | 5,502 | 5,488† | 97.20% | 99.75% | 98.46% | +284 |
 | **3. Strict MWIS (`intersection > 0`)** | 5,348 | 5,014 | 88.81% | 93.75% | 91.21% | -190 |
 | **4. Tolerant MWIS (10% bleed tolerance)** | 5,901 | 5,174 | 91.64% | 87.68% | 89.62% | -30 |
 | **5. Tolerant MWIS (TATR-parity, 50% overlap)** | 5,992 | 5,202 | 92.14% | 86.82% | 89.40% | -2 |
 | **6. Tolerant MWIS (Standard NMS, $\text{IoU} > 0.50$)** | 6,003 | 5,203 | 92.15% | 86.67% | 89.33% | -1 |
 
-† *Note on Heuristic Snapping Circularity:* The 5,488 heuristic TP count is artificially inflated by +284 over raw predictions purely due to evaluation circularity: `MatchingPostProcessor` forcibly snaps sloppy regressed coordinates directly to the ground-truth OCR token boundaries before evaluation.
+† *Note on Heuristic Snapping Circularity:* The 5,488 heuristic TP count is artificially inflated by +406 over honest de-snapped post-processing (and +284 over raw) purely due to evaluation circularity: `MatchingPostProcessor` forcibly overwrites sloppy regressed coordinates with ground-truth OCR token boundaries in step 8a (`_align_table_cells_to_pdf`) prior to IoU evaluation. Disabling snapping reveals that the native post-processor actively destroys 122 valid cells ($5,204 \rightarrow 5,082$), which exact MWIS rescues (+121 cells, achieving 5,203 TPs).
 
 ---
 

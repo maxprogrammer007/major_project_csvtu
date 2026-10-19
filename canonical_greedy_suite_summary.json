@@ -1,0 +1,100 @@
+{
+  "num_tables": 100,
+  "total_gt_cells": 5646,
+  "exact_ilp": {
+    "gt_tp": 1839,
+    "gt_micro_rec": 0.3257173219978746,
+    "ocr_tp": 1836,
+    "ocr_micro_rec": 0.32518597236981933,
+    "ocr_teds_s": 0.644726570700924,
+    "ocr_grits_top": 0.7604915643129947
+  },
+  "unnorm_greedy_seed42": {
+    "gt_tp": 495,
+    "gt_micro_rec": 0.08767268862911796,
+    "ocr_tp": 504,
+    "ocr_micro_rec": 0.08926673751328375,
+    "ocr_teds_s": 0.4034598685309442,
+    "ocr_grits_top": 0.5629061674278152
+  },
+  "unnorm_greedy_20seeds": {
+    "gt_totals_mean": 517.75,
+    "gt_totals_std": 9.684394663581198,
+    "gt_totals_min": 499,
+    "gt_totals_max": 537,
+    "ocr_totals_mean": 512.6,
+    "ocr_totals_std": 9.619771307052991,
+    "ocr_totals_min": 486,
+    "ocr_totals_max": 532,
+    "ocr_per_seed_totals": [
+      512,
+      506,
+      504,
+      504,
+      511,
+      514,
+      508,
+      486,
+      532,
+      523,
+      520,
+      518,
+      519,
+      516,
+      523,
+      506,
+      507,
+      507,
+      514,
+      522
+    ]
+  },
+  "norm_greedy_seed42": {
+    "gt_tp": 1838,
+    "gt_micro_rec": 0.3255402054551895,
+    "ocr_tp": 1835,
+    "ocr_micro_rec": 0.32500885582713424,
+    "ocr_teds_s": 0.644726570700924,
+    "ocr_grits_top": 0.7604637865352168
+  },
+  "norm_greedy_20seeds": {
+    "gt_totals_mean": 1838.0,
+    "gt_totals_std": 0.0,
+    "gt_totals_min": 1838,
+    "gt_totals_max": 1838,
+    "ocr_totals_mean": 1834.6,
+    "ocr_totals_std": 0.8,
+    "ocr_totals_min": 1834,
+    "ocr_totals_max": 1836,
+    "ocr_per_seed_totals": [
+      1836,
+      1834,
+      1834,
+      1835,
+      1834,
+      1834,
+      1835,
+      1834,
+      1834,
+      1834,
+      1835,
+      1835,
+      1836,
+      1836,
+      1834,
+      1834,
+      1834,
+      1834,
+      1836,
+      1834
+    ]
+  },
+  "selection_identity_jaccard": {
+    "ocr_jaccard_mean": 0.9962030877022479,
+    "ocr_jaccard_min": 0.84,
+    "ocr_jaccard_max": 1.0,
+    "ocr_tables_jaccard_1_0": 93,
+    "gt_jaccard_mean": 0.996082858635956,
+    "gt_tables_jaccard_1_0": 93
+  }
+}

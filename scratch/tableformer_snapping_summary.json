@@ -1,0 +1,8 @@
+{
+  "total_gt": 5646,
+  "total_raw_tp": 5204,
+  "total_snapped_tp": 5488,
+  "total_desnapped_tp": 5082,
+  "snapping_inflation": 406,
+  "desnapped_vs_raw": -122
+}

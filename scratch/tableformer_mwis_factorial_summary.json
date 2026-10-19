@@ -1,0 +1,12 @@
+{
+  "total_tables": 100,
+  "total_gt": 5646,
+  "raw_tp": 5204,
+  "raw_micro_recall": 0.9217144881331917,
+  "mwis_gt_tp": 5203,
+  "mwis_gt_micro_recall": 0.9215373715905065,
+  "mwis_gt_mean_time_ms": 30.704764002002776,
+  "mwis_ocr_tp": 5202,
+  "mwis_ocr_micro_recall": 0.9213602550478215,
+  "mwis_ocr_mean_time_ms": 30.969979999936186
+}

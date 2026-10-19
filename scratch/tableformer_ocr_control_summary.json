@@ -1,0 +1,9 @@
+{
+  "total_gt": 5646,
+  "total_raw_tp": 5204,
+  "total_gt_snap_tp": 5488,
+  "total_ocr_snap_tp": 3902,
+  "gt_snap_gain_over_raw": 284,
+  "ocr_snap_vs_raw": -1302,
+  "ocr_snap_vs_gt_snap": -1586
+}

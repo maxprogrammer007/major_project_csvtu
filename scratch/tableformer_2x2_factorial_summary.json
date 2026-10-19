@@ -1,0 +1,12 @@
+{
+  "total_gt": 5646,
+  "raw_tp": 5204,
+  "gt_snap_on_tp": 5488,
+  "gt_snap_off_tp": 5082,
+  "ocr_snap_on_tp": 3902,
+  "ocr_snap_off_tp": 4921,
+  "gt_snapping_inflation": 406,
+  "ocr_snapping_damage": -1019,
+  "gt_snap_off_vs_raw": -122,
+  "ocr_snap_off_vs_raw": -283
+}

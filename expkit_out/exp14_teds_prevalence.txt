@@ -1,0 +1,25 @@
+==============================================================================
+E14 - TEDS-S over-pruning prevalence (Branch B, OCR condition)
+==============================================================================
+input: metric_suite_results.csv  N=100 tables
+corpus: heuristic destroys 500 cells in total (+5.00/table mean); mean TEDS-S advantage +0.0593
+
+1. Paired TEDS-S, H1_OCR (heuristic) vs H2_OCR (exact):
+   win/tie/loss = 57/9/34  (heuristic outscores exact on 57.0% of tables)
+   Wilcoxon p = 2.463e-03 | paired t p = 4.404e-03
+
+2. Prevalence grid (rows = severe-pruning threshold D on the fraction of exact-selection cells destroyed by the heuristic;
+   cols = heuristic TEDS-S threshold S):
+   D \ S                         S=0.8                       S=0.9
+   0.3      11/ 38 severe,  11.0% corpus    5/ 38 severe,   5.0% corpus
+   0.5       7/ 29 severe,   7.0% corpus    3/ 29 severe,   3.0% corpus
+   0.7       1/ 15 severe,   1.0% corpus    1/ 15 severe,   1.0% corpus
+   (read: among tables where the heuristic destroys >=D of the exact selection's cells, n_teds_ge_S also score >=S under the heuristic)
+
+3. Association (destroyed cells vs per-table TEDS-S advantage):
+   Pearson r = -0.095 (p = 3.506e-01)
+   Spearman rho = -0.138 (p = 1.747e-01)
+
+4. GT-token condition replication: mean advantage +0.0155, win rate 50.0%, Wilcoxon p = 3.810e-01
+
+figure -> expkit_out/fig14_teds_vs_destroyed.png

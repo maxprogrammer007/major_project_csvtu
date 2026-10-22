@@ -1,0 +1,21 @@
+{
+  "total_gt_cells": 6927,
+  "base_detector": {
+    "tp": 6815,
+    "fp": 338,
+    "recall_pct": 98.38313844377076,
+    "precision_pct": 95.27470991192507
+  },
+  "singh_middleton_baseline": {
+    "total_inferred_cells": 467,
+    "valid_recoveries": 20,
+    "false_insertions": 447,
+    "span_violations": 387,
+    "span_violation_rate_pct": 82.86937901498929,
+    "inferred_precision_pct": 4.282655246252676,
+    "full_reconstructed_tp": 6835,
+    "full_reconstructed_fp": 785,
+    "full_reconstructed_recall_pct": 98.67186372166883,
+    "full_reconstructed_precision_pct": 89.69816272965879
+  }
+}

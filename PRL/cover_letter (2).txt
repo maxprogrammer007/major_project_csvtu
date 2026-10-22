@@ -1,0 +1,52 @@
+Cover Letter — Pattern Recognition Letters
+
+Dear Editors,
+
+We submit our manuscript, "Post-processing and evaluation artifacts dominate
+measured losses in table structure recognition: a cross-paradigm audit," for
+consideration in Pattern Recognition Letters.
+
+Table structure recognition (TSR) papers overwhelmingly report improvements in
+model components, yet the measured numbers conflate three sources: the model,
+the post-processing pipeline, and the evaluation machinery itself. This letter
+reports, to our knowledge, the first cross-paradigm audit that decomposes those
+sources. Across four public systems (SPLERGE, TableFormer/docling v2.1.0,
+TableTransformer, LORE-TSR), we replace each heuristic post-processor with an
+exact combinatorial formulation under identical inputs and objectives, and we
+quantify four artifacts: destructive merge heuristics (27-34% cell
+destruction, fully repaired by exact set packing), objective-vs-solver
+dissociation (unnormalized greedy collapse to 27.5% of exact recall;
+normalized greedy matches the ILP), a threshold-policy recall deficit (LORE:
+31.2% to 90.5% recall from one threshold change at 99.2% precision), and
+evaluation circularity (TableFormer's ground-truth-derived PDF text layer;
++406 TP inflation from snap-to-ground-truth matching over snap-disabled
+matching). We further show
+that TEDS-S rewards over-pruning systematically, not anecdotally: the
+destructive heuristic outscores exact selection on 57 of 100 tables (Wilcoxon
+p=2.5e-3; a mean +0.059 TEDS-S advantage purchased with 500 destroyed cells),
+7% of tables lose over half their cells yet still score 0.80 or higher, and
+case studies include a table where a heuristic retaining 3.9% of cells scores
+near-perfect TEDS-S (0.9265).
+
+Why PRL: the contribution is a concise, measurement-focused finding about how
+pattern recognition systems should be evaluated, with direct methodological
+consequences for a large and active subfield. All N=100 analyses are labelled
+exploratory; a 1,000-table confirmatory replication is pre-specified
+(pre-committed hypotheses, TOST margins, power analysis, pinned seeds and
+dependencies) and will be executed before acceptance.
+
+This manuscript is original, has not been published previously, and is not
+under consideration elsewhere. All authors have approved the submission and
+declare no competing interests. All traces, per-table results, a frozen
+results ledger, the pre-specified replication protocol, and code are
+available at
+https://github.com/maxprogrammer007/major_project_csvtu.
+
+Sincerely,
+Abhinav Shukla (Corresponding author)
+Department of Computer Science & Engineering,
+Chhattisgarh Swami Vivekanand Technical University, Bhilai, India
+student2.ai@csvtu.ac.in
+
+Co-author: Nachiket Tapas, Department of Computer Science & Engineering,
+Chhattisgarh Swami Vivekanand Technical University, Bhilai, India.

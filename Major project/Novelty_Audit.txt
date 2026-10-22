@@ -1,0 +1,881 @@
+--- PAGE 1 ---
+INDEPENDENT NOVELTY AUDIT · PUBLICATION FEASIBILITY
+Novelty Audit:
+Detection-Conditioned
+Cell Insertion for Table
+Structure Recognition
+A claim-by-claim literature verification of the proposal “Learning to
+Insert: Image-Grounded Cell Recovery from Incomplete Table
+Structure Predictions” — covering the 2023–2026 TSR literature,
+reference verification, closest prior art, reviewer threat analysis, and
+an ICDAR 2027 publication plan.
+Prepared for the proposing author
+Scope: broad-sweep novelty search · verification of all cited 2025–2026
+references ·
+venue and timeline analysis for a solo, single-GPU research setup
+TARGET VENUE: ICDAR 2027 · KUALA LUMPUR OCTOBER 2026
+--- PAGE 2 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+i
+Table of Contents
+1
+1. Executive Summary
+2
+2. Audit Scope and Method
+3
+3. Reference Verification (2025-2026)
+4
+4. Novelty Audit: Claim-by-Claim Verdicts
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+ 4.1 Pillar 1 - learned, variable-cardinality insertion
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+ 4.2 Pillar 2 - the three-way insertion decision
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+ 4.3 Pillar 3 - the evaluation package
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+ 4.4 Hypotheses H1-H5 under audit
+ 
+7
+5. Closest Prior Art: Deep Analysis
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+ 5.1 LGPMA - empty-cell searching and merging (ICDAR 2021)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+ 5.2 Singh and Middleton (IJDAR 2025) - alignment-based missing-cell inference
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+ 5.3 Singh et al. (IJDAR 2025) - semi-supervised historical TSR
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+ 5.4 Formerge - recovering spanning cells from a grid (ICDAR 2023)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+ 5.5 GrabTab - flexible component deliberation (AAAI 2024)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+ 5.6 DQ-DETR-style TSR and TSRFormer - dynamic queries in primary detectors
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+ 5.7 DINO two-stage query selection and semi-supervised pseudo-label completion
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+ 5.8 The VLM and image-to-sequence line
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+ 5.9 The residual gap the paper may claim
+ 
+10
+6. Threat Analysis and Positioning
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+ 6.1 Threat 1 - is this not just LGPMA or the IJDAR reconstruction?
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+ 6.2 Threat 2 - lower the threshold or improve the detector instead
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+ 6.3 Threat 3 - why not just use a vision-language model?
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+ 6.4 Threat 4 - synthetic deletion is not detector failure
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+ 6.5 Citation additions the paper should make
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+ 6.6 Recommended positioning statement
+ 
+12
+7. Publishability Verdict and ICDAR 2027 Plan
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+ 7.1 Two realistic paths
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+ 7.2 Feasibility notes for one consumer GPU
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+ 7.3 The killer experiment list
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+ 7.4 Suggested framing
+ 
+14
+8. Verified Reading List
+
+--- PAGE 3 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+1
+VERDICT SNAPSHOT
+1. Executive Summary
+SURVIVES
+10 / 10 REAL
+28 FEB 2027
+Core novelty claim holds after a
+broad 2023-2026 sweep - no direct
+ prior found
+ 
+Cited 2025-2026 references verified;
+only two minor metadata quirks
+ICDAR 2027 listed submission
+deadline - about 4.3 months of
+ runway
+ 
+The proposal under review, Learning to Insert: Image-Grounded Cell Recovery from Incomplete
+Table Structure Predictions, defines a deliberately narrow intervention in table structure recognition
+(TSR). Instead of building another end-to-end table parser, it proposes a recovery stage that observes a
+table image together with the surviving cell candidates of a fixed base detector, and learns to insert
+additional cell instances only where image evidence and surviving-cell context justify them. The
+insertion decoder may output a variable number of new candidates, may explicitly decline to insert, and
+may recognize that an apparent vacancy belongs to an existing spanning cell. The author asks whether
+this design is novel enough for ICDAR or a Q1 journal, and this report answers that question with a
+claim-by-claim audit against the 2023-2026 literature.
+The audit verified every 2025-2026 reference that decides the novelty question, then swept the TSR
+literature broadly: a curated community repository covering more than 150 methods from 2017 to 2026,
+ICDAR 2024/2025/2026 proceedings coverage, the 2026 arXiv output (TableSeq, FastTab, StrucTab,
+ConRTF, InstructTable), the historical-record reconstruction line in IJDAR, and the adjacent domains that a
+reviewer would raise - missed-detection recovery in object detection, semi-supervised pseudo-label
+completion, two-stage DETR query generation, and the vision-language-model (VLM) table parsing wave.
+Search phrasing covered missing-cell recovery, candidate insertion, cell hypothesis generation, detection
+completion, and vacancy detection variants.
+Headline finding: the narrow contribution survives. No published TSR system was found that learns a
+variable-cardinality insertion operator conditioned on an incomplete, detector-produced candidate set. What
+exists today is rule-based geometric gap filling (the IJDAR 2025 historical-record work infers missing cells
+from the alignment of detected cells), structure-recovery heuristics (LGPMA searches and merges empty
+cells on its own segmentation), span merging from a complete grid (Formerge), and dynamic query
+generation inside primary detectors (DQ-DETR-style TSR, DINO-style two-stage query selection). None of
+these conditions a learned decoder on surviving candidates, and none implements an explicit insert / no-insert
+/ span-compatible decision. The three novelty pillars - detection-conditioned learned insertion, the three-way
+insertion decision, and the controlled-deletion plus natural-omission evaluation package - therefore stand,
+provided the paper is written against the closest prior art identified in Chapter 5.
+Three risks remain, none of them novelty-fatal. First, the empirical risk: on the clean, canonicalized
+PubTables-1M benchmark, a strong geometric completion baseline or simple threshold relaxation could
+capture many natural omissions, which would shrink the headline gain; the go/no-go gate in the proposal
+
+--- PAGE 4 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+2
+already anticipates this. Second, positioning risk: VLM-based table parsers are now published at top venues
+(StrucTab at ECCV 2026; UniTable reports surpassing GPT-4o on table parsing), so the paper must argue
+explicitly why a detector-level intervention still matters. Third, timing: ICDAR 2027 convenes in Kuala
+Lumpur in August 2027 and its listed paper deadline is 28 February 2027, roughly 4.3 months away rather
+than the six months assumed - the plan in Chapter 7 compresses accordingly.
+Recommendation: proceed. The proposal is unusually well calibrated - its own novelty-boundary table
+survives re-assessment almost unchanged - and the reference list is real. Keep the host detector frozen, keep
+the architecture small, run the two baselines first (threshold relaxation and geometric completion), and let the
+natural-omission experiment decide whether this becomes a full architecture paper or a careful
+negative-result analysis. Both outcomes are publishable at ICDAR if measured honestly; only the headline
+framing would change.
+WHAT WAS SEARCHED AND HOW
+2. Audit Scope and Method
+The audit had two stages. The first stage verified the existence and content of the ten 2025-2026 references
+that the proposal itself flags as decisive, plus one dataset reference (PubTables-v2). Verification meant
+locating the paper on arXiv, Springer, ScienceDirect, or a proceedings site; confirming the author list, venue,
+and year; and, for the closest priors, reading the abstract or full text to check that the proposal characterizes
+them accurately. This step matters because AI-assisted drafts sometimes cite plausible but nonexistent work,
+and any such fabrication would have invalidated the proposal's novelty boundary.
+The second stage was a broad novelty sweep anchored on the task definition - learned, variable-cardinality
+insertion of cell candidates into an incomplete detector output. Primary sources were: a curated
+table-structure-recognition repository maintained by a community researcher, which indexes roughly 150
+methods from 2017 to 2026 with venues; ICDAR 2024 and 2025 proceedings entries (SepFormer, TABLET,
+DTSM, ETT, MuTabNet, SPRINT, ClusterTabNet, and peers); ICDAR 2026 acceptances visible on arXiv
+(ConRTF); 2026 arXiv preprints (TableSeq, FastTab, StrucTab, InstructTable); and the image-to-sequence
+and VLM line (TableFormer, VAST, UniTable, TabPedia, InstructTable, StrucTab). Adjacent domains were
+swept as well: missed-detection and false-negative recovery in object detection, semi-supervised object
+detection with pseudo-label completion (the Soft Teacher line), two-stage DETR and DINO query selection,
+and DETR-variance analysis relevant to query design.
+Query phrasings included combinations of: missing cell recovery, missed cell detection, cell completion,
+candidate insertion, cell hypothesis, detection completion, vacancy detection, empty cell recovery, threshold
+relaxation, and proposal omissions, crossed with table structure recognition and with generic object
+detection. The IJDAR 2025 historical-record paper was fetched in full to verify the exact mechanism of its
+missing-cell inference, because it is the closest direct prior and the proposal's novelty argument leans on
+distinguishing learned insertion from that rule-based completion.
+Three limitations apply. The sweep relied on web-indexed sources, so paywalled full texts other than the
+closest priors were checked at abstract level only. Non-English venues were not systematically covered,
+
+--- PAGE 5 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+3
+although the dominant TSR publication venues are English-language. And any literature search has a tail
+latency: work published in the weeks before submission will not appear here. The proposal already contains
+the correct mitigation - re-run a focused search immediately before submission and adjust the novelty claim
+if needed. This report's Chapter 8 reading list is designed to make that re-verification a one-hour task rather
+than a fresh research project.
+DO THE DECISIVE CITATIONS EXIST
+3. Reference Verification (2025-2026)
+The proposal cites a cluster of very recent work (2025-2026) that defines the state of the art it must be
+measured against. Each entry below was located and cross-checked against the proposal's description. The
+result is reassuring: every cited item exists, and the descriptions match the sources with only two minor
+metadata discrepancies, noted beneath the table.
+Ref
+Proposal claim
+Verification
+Notes
+[15]
+TableCenterNet
+One-stage parallel regression of
+spatial and logical cell locations
+(arXiv:2504.17522)
+VERIFIED
+arXiv Apr 2025; public GitHub (dreamy-xay);
+matches claim.
+[16] Historical-r
+ecord TSR
+IJDAR 2025; infers missing cells
+from alignment of detected
+positive cells
+VERIFIED
+Singh and Middleton, IJDAR vol. 28
+(s10032-025-00543-9); mechanism quote
+confirmed verbatim; already accumulating
+citations.
+[17]
+Semi-supervised
+historical TSR
+IJDAR 2025; evaluates
+missing-cell generation in a
+semi-supervised setting
+VERIFIED
+Singh et al., IJDAR (s10032-025-00562-6),
+published online Dec 2025.
+[21]
+OG-HFYOLO
+Deformation table cell instance
+segmentation (arXiv:2504.20682)
+VERIFIED
+Title differs slightly: actual title uses
+Orientation Gradient Guidance and
+Heterogeneous Feature Fusion; fix wording
+when citing.
+[22] ConRTF
+Edge-constrained boundary
+refinement for realtime
+transformer TSR
+(arXiv:2607.00734)
+VERIFIED
+Accepted to ICDAR 2026 per arXiv comments;
+D-FINE based; up to +1.6 GriTS at equal
+inference speed.
+[23] TableSeq
+Unified autoregressive structure,
+content, and coordinates
+(arXiv:2604.16070)
+VERIFIED
+Apr 2026; image-only single-stream model;
+strong PubTabNet/FinTabNet/SciTSR results.
+[24] FastTab
+Tiny recursive module plus 1D
+transformers (arXiv:2605.22422)
+VERIFIED
+May 2026; grid-centric low-latency TSR.
+[25] StrucTab
+Structured optimization with
+intermediate supervision and
+decomposed RL rewards
+(arXiv:2606.29905)
+VERIFIED
+Now an ECCV 2026 paper with public code
+and the TableVerse-5K benchmark - a notable
+VLM-side advance the proposal should cite as
+such.
+
+--- PAGE 6 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+4
+Ref
+Proposal claim
+Verification
+Notes
+[26] BGTR
+Bounding-box-guided HTML
+generation (arXiv:2609.08705)
+VERIFIED
+with dating
+quirk
+The work is ICPR 2024; the arXiv posting (Sep
+2026) is archival. Cite as ICPR 2024, not 2026.
+[27] TPGCAT
+Text prior-guided cell alignment,
+Pattern Recognition 114832
+VERIFIED
+In press / available Sep 2026
+(S0031320326017966).
+PubTables-v2
+Optional extension dataset
+(multi-page)
+VERIFIED
+Smock et al., arXiv:2512.10888 (Dec 2025);
+first large-scale multi-page TSR benchmark;
+also a useful future testbed.
+ Table 3.1 - Verification status of the 2025-2026 references that decide the novelty question.
+ 
+Two metadata corrections are required before submission. Reference [21] should quote the actual
+OG-HFYOLO title (Orientation Gradient Guidance and Heterogeneous Feature Fusion for Deformation
+Table Cell Instance Segmentation), and reference [26] should be dated ICPR 2024 since the September 2026
+arXiv entry is an archival upload of already published work. Neither affects the novelty argument.
+One bonus finding outside the requested verification window: reference [19] cites TEDS as Evaluating Table
+Structure Recognition: A New Perspective (arXiv:2208.00385). The TEDS metric originates from Zhong,
+Xie, and Liu, Image-based Table Recognition: Data, Model, and Evaluation (ECCV 2020,
+arXiv:1905.13391), which introduced the tree-edit distance similarity and its structural variant S-TEDS. The
+proposal should cite that source, or both, to avoid a reviewer flagging a mis-attributed metric. Separately, two
+verified status upgrades strengthen the related-work map rather than weakening it: StrucTab is now
+peer-reviewed at ECCV 2026, and ConRTF is accepted at ICDAR 2026, which confirms that both the
+VLM/RL line and the detector-refinement line remain active through the submission window.
+THE CORE ASSESSMENT
+4. Novelty Audit: Claim-by-Claim Verdicts
+The proposal's own Table 1 divides candidate claims into established territory and a narrow surviving
+contribution. This chapter re-assesses that boundary with the evidence gathered in the sweep. The overall
+conclusion is that the proposal's self-assessment is accurate and, if anything, slightly conservative: the
+intervention it proposes was not found anywhere in the 2017-2026 TSR literature, while everything it
+concedes as established is indeed established.
+Claim
+Audit verdict
+Strongest evidence
+Recover missing cells from
+surviving detections (alignment or
+grid based)
+ESTABLISHED
+IJDAR 2025 historical-record work generates candidate cells at
+alignment gaps (mechanism verified verbatim);
+RobusTabNet-style split-and-merge pipelines imply grid
+completion.
+Find vacancies using row/column
+alignment or topology
+ESTABLISHED
+LGPMA empty-cell searching and merging; historical-record
+gap filling; split-and-merge grid vacancy logic.
+
+--- PAGE 7 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+5
+Claim
+Audit verdict
+Strongest evidence
+Use image evidence together with
+structural information for recovery
+ESTABLISHED
+LGPMA couples local/global visual mask alignment with
+structural recovery; modern joint spatial-logical predictors
+(LORE, TGRNet, TableCenterNet) blend both sources.
+Refine cell geometry with
+structural context
+ESTABLISHED
+Boundary refinement is an active detector-side line (ConRTF,
+ICDAR 2026; VAST visual alignment).
+Create new structural cells inside a
+reconstruction pipeline
+ESTABLISHED
+TableFormer PDF-oriented orphan handling; historical-record
+reconstruction creates cells at gaps.
+Learned insertion of omitted
+instances from an incomplete
+detector set, with variable output
+cardinality
+NARROW-NOV
+EL - the core
+claim
+No prior found across curated 2017-2026 TSR listings, ICDAR
+2024-2026 proceedings coverage, 2026 arXiv, and
+adjacent-domain sweeps. Closest mechanism relatives are
+primary detectors with dynamic queries (DQ-DETR TSR,
+DINO two-stage query selection), which do not condition on a
+surviving candidate set.
+Explicit insert / no-insert /
+span-compatible three-way
+decision
+NARROW-NOV
+EL -
+differentiating
+Formerge merges grid cells into spans (cardinality reduction);
+LGPMA divides empty cells by rules; no learned per-vacancy
+three-way decision exists. DETR's background class is
+per-query objectness in a primary detector, not a
+span-compatibility outcome.
+Controlled-deletion training plus
+filtered-vs-proposal omission
+evaluation package
+NARROW-NOV
+EL -
+measurement
+contribution
+Deletion-style robustness tests exist generically in detection, but
+the assembled protocol (filtered vs proposal omissions, insertion
+precision and recall, false insertion rate, span violation rate,
+no-change accuracy) was not found as a task-level evaluation in
+TSR.
+ Table 4.1 - Re-assessed novelty boundary. The proposal's own assessment survives.
+ 
+4.1 Pillar 1 - learned, variable-cardinality insertion
+The search found no system that takes an incomplete candidate set produced by a base detector and emits a
+variable number of new cell instances through a learned decoder conditioned on that set. The rule-based
+completion in the IJDAR 2025 historical-record paper is the nearest functional neighbor: it generates
+candidate cells where gaps are identified from the horizontal and vertical alignment of detected positive
+cells, but it is a fixed geometric heuristic with no learned insertion decision, no image-grounded scoring at
+insertion time, and no ability to abstain. LGPMA recovers empty cells, yet it does so inside its own
+mask-alignment segmentation pipeline rather than on top of an external detector's candidate set, and its
+recovery is a search-and-merge procedure. Query-based detectors such as TATR and DQ-DETR-style TSR
+generate cell hypotheses from image content, but as primary detectors - they never observe a surviving
+candidate set, and their per-query background class is not a decision about a specific geometric vacancy in a
+given incomplete table. This is the gap the proposal fills, and it is a genuine one.
+4.2 Pillar 2 - the three-way insertion decision
+
+--- PAGE 8 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+6
+The insert / no-insert / span-compatible outcome space is the most differentiating design element.
+Spanning-cell handling exists, but always as a separate operation: split-and-merge methods merge grid
+elements into spans (SPLERGE, SEM, Formerge), and LGPMA locates and divides empty cells with rules.
+No learned operator was found that decides, per vacancy, whether a new independent cell, no cell, or a
+span-compatible explanation is correct. The closest conceptual relative is the background class of a DETR
+query, which teaches a query to output nothing, but that is objectness in a primary detector rather than a
+structural explanation of a vacancy conditioned on neighboring cells. If the experiments show this three-way
+head reduces over-segmentation of spanning cells relative to a box-only ablation, it becomes the paper's most
+defensible architectural contribution.
+4.3 Pillar 3 - the evaluation package
+The controlled-deletion protocol with isolated, adjacent, and span-adjacent deletion patterns; the split of
+natural omissions into filtered omissions (a candidate existed below the operating threshold) versus proposal
+omissions (no candidate existed even in a generous pre-filter pool); and the insertion-specific metrics
+(insertion precision, recovery recall, false insertion rate, candidate recall gain, span violation rate, intact-table
+no-change accuracy) together form an evaluation contribution that the sweep did not find elsewhere in TSR.
+Robustness-by-deletion appears in detection generally, and competition reports often analyze missed
+detections, but the proposal's package is assembled into a task-level protocol with matched-precision
+comparison against threshold relaxation and geometric completion. As a standalone contribution it would be
+thin; as the experimental backbone of the learned-insertion paper it is exactly what a skeptical reviewer
+needs.
+4.4 Hypotheses H1-H5 under audit
+Hypothesis
+Status
+What the paper needs
+H1 - candidate incompleteness is a
+non-trivial error source
+PLAUSIBLE,
+UNMEASURED
+Phase 1 profiling on PubTables-1M with TATR: report the
+natural omission rate at the operating threshold and the
+filtered/proposal split. Caveat: PubTables-1M is
+canonicalized and clean, so omissions may be rarer than in
+wild scans - state rates explicitly.
+H2 - threshold relaxation is not
+equivalent to learned insertion
+MUST-BE-TESTED
+(baseline)
+Matched-precision comparison at equal candidate budgets;
+report where lowered thresholds create duplicates or
+competing false candidates.
+H3 - learned insertion recovers
+natural proposal omissions
+CORE EMPIRICAL
+CLAIM
+Recovery recall on proposal omissions at matched insertion
+precision; this single number decides the paper's fate.
+H4 - both image evidence and
+surviving-cell context matter
+ABLATION-SUPPO
+RTED DESIGN
+The 2x2 information-source ablation (no-recovery control,
+context-only, image-only, full model) is well designed; keep
+it.
+H5 - explicit no-insertion reduces
+false insertions and span damage
+TESTABLE VIA
+ABLATION
+With-vs-without no-insertion class ablation; report span
+violation rate and intact-table no-change accuracy.
+
+--- PAGE 9 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+7
+ Table 4.2 - Hypothesis status and the evidence each requires.
+ 
+DOSSIERS ON THE EIGHT NEAREST NEIGHBORS
+5. Closest Prior Art: Deep Analysis
+This chapter gives each methodological neighbor a short dossier: what it does, what it leaves open, and what
+the future paper must do to differentiate itself. Together these dossiers define the related-work section of the
+submission and the baselines a reviewer will expect.
+5.1 LGPMA - empty-cell searching and merging (ICDAR 2021)
+LGPMA aligns cell regions with local and global pyramid masks and then runs a uniform structure recovery
+pipeline of cell matching, empty cell searching, and empty cell merging, which locates and splits empty cells
+so that both non-empty and empty cells are handled. It won the ICDAR 2021 best industry paper award and
+remains the standard citation for structure-aware vacancy handling. What it leaves open: recovery happens
+inside its own segmentation pipeline with rule-driven searching and merging, not as a learned operator over
+an external detector's candidate set; there is no explicit abstain outcome and no notion of returning
+no-insertion on an intact table. The paper must present LGPMA as the strongest established combination of
+image evidence and topological vacancy reasoning, and position insertion as a different intervention point:
+after a fixed detector, on its retained candidate set.
+5.2 Singh and Middleton (IJDAR 2025) - alignment-based missing-cell
+inference
+This is the closest direct prior, and the audit verified its mechanism from the full text. The authors state the
+procedure explicitly:
+Since the trained model generates a limited number of table cells (up to 2000, including both
+positive and negative predictions), we implemented a method to infer missing cells based on the
+horizontal and vertical alignment of detected positive cells. This approach ensures complete table
+reconstruction by generating candidate cells where gaps are identified and aligning them with
+existing cells.
+Singh and Middleton, IJDAR vol. 28, 2025, Section 3.2
+The method is exactly the coordinate-based geometric completion that the proposal demotes to baseline
+status: no learned insertion decision, no image evidence at insertion time, no abstention class, and a
+historical-records domain with CascadeTabNet as the detector. It establishes that generating candidates at
+detected gaps is not new, which the proposal already concedes. For the submission, this paper is
+simultaneously a threat and an asset: it is the geometric-completion baseline to reimplement on the same
+detector, and it proves the field recognizes missing-cell reconstruction as a real problem worth solving.
+
+--- PAGE 10 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+8
+5.3 Singh et al. (IJDAR 2025) - semi-supervised historical TSR
+The companion paper studies semi-supervised table structure recognition for digitizing historical tables and
+evaluates missing-cell generation and reconstruction within that setting. Its relevance is contextual rather than
+competitive: it shows the historical-table community actively works on incomplete structure recovery, and it
+supplies a domain where omissions are frequent and where a recovery module could later be stress-tested. It
+leaves the supervised, detection-conditioned intervention study untouched, and it does not constrain the
+novelty claim.
+5.4 Formerge - recovering spanning cells from a grid (ICDAR 2023)
+Formerge splits a table into a grid of cells via separator detection and then uses a transformer to recover
+spanning cells from that grid. Operationally it is a merging operator: it reduces the cardinality of a complete
+grid into spans, whereas the proposed insertion operator increases the cardinality of an incomplete set. The
+reason it matters here is design vocabulary: Formerge demonstrates that learned reasoning about which
+regions belong to a common spanning cell is feasible and publishable, which directly supports the plausibility
+of the span-compatible outcome. The paper should cite it as the span-side counterpart and explain that
+span-compatibility in the insertion setting means abstaining from subdividing a region that an existing span
+already explains.
+5.5 GrabTab - flexible component deliberation (AAAI 2024)
+GrabTab treats complex table recognition as progressive deliberation over flexible components, selecting
+reasonable structural components rather than forcing a fixed representation. It is cited here because it
+normalizes the idea that TSR benefits from explicit decision-making about structure, not just prediction. It
+does not insert candidates into an incomplete detection set and does not threaten the claim, but it belongs in
+the related work on structural decision-making, alongside TRACE and the separator-regression family
+(TSRFormer, SepFormer, SEMv3), which collectively show the field moving toward decomposed,
+decision-heavy TSR pipelines.
+5.6 DQ-DETR-style TSR and TSRFormer - dynamic queries in
+primary detectors
+A Pattern Recognition 2023 paper applies Dynamic Queries Enhanced DETR to robust table structure
+recognition, and TSRFormer (ACM MM 2022) uses separator-focused two-stage transformer detection.
+Both generate queries from image content rather than using a static query bank, which is mechanistically
+similar to the proposal's image-attention insertion queries. The difference is conditioning and role: these are
+primary detectors that produce the full candidate set from the image alone, without observing any surviving
+candidate set, and without a per-vacancy structural decision. The submission must cite both and state the
+distinction plainly: dynamic query generation is established; dynamic query generation conditioned on an
+incomplete candidate set, with insert/no-insert/span-compatible outcomes, is not.
+
+--- PAGE 11 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+9
+5.7 DINO two-stage query selection and semi-supervised pseudo-label
+completion
+Two mechanism relatives live outside TSR and should be cited preemptively. DINO (ICLR 2023)
+popularized mixed query selection, initializing decoder queries from encoder proposals - i.e., queries
+anchored on candidate content. Semi-supervised object detection (the Soft Teacher line and successors)
+completes missing pseudo-labels for unlabeled data during training, which is functionally learned completion
+of a retained set's missing boxes, but at training time and without any table-structural reasoning. Neither
+performs inference-time, structure-aware expansion of a detector's output set. Citing both converts a
+potential reviewer objection - is this not just two-stage DETR or SSL? - into evidence that the mechanism is
+sound and the task setting is new.
+5.8 The VLM and image-to-sequence line
+From TableFormer (CVPR 2022) through VAST (CVPR 2023), UniTable (2024, whose authors report
+surpassing GPT-4o and GPT-4-turbo with vision on table parsing), TabPedia (NeurIPS 2024), UniTabNet
+(EMNLP 2024), InstructTable (2026), and StrucTab (ECCV 2026), autoregressive models emit structure
+tokens and coordinates in one stream. In a loose sense every emitted cell is an insertion, but there is no
+explicit detection-conditioned insertion stage: the candidate set is not an input, no-insertion is not an
+outcome, and span-compatibility is implicit in HTML attributes. Cell box precision from sequence decoders
+also typically trails dedicated detection heads, which is precisely why a detection-level recovery module
+remains relevant. StrucTab deserves a sentence of its own: with intermediate structural supervision,
+decomposed RL rewards, and a new benchmark, it represents the strongest current VLM-side claim, and the
+submission should compare against or at least discuss it.
+5.9 The residual gap the paper may claim
+No published TSR system learns a variable-cardinality insertion operator that expands an
+incomplete, detector-produced candidate set using raster image evidence and surviving-cell
+context, with an explicit learned decision among insertion, abstention, and span-compatibility.
+Geometric completion, vacancy searching, span merging, dynamic queries, and training-time
+label completion each exist in isolation; their detection-conditioned, decision-aware composition
+does not.
+Residual gap statement supported by this audit - re-verify immediately before submission
+
+--- PAGE 12 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+10
+WHAT REVIEWERS WILL ATTACK
+6. Threat Analysis and Positioning
+6.1 Threat 1 - is this not just LGPMA or the IJDAR reconstruction?
+This is the most likely first-round objection, and the answer is already half-built into the proposal's novelty
+table. The differentiation rests on four properties the priors lack: the operator is learned end to end; it is
+conditioned on an external detector's surviving candidate set; its output cardinality varies; and it can
+explicitly abstain or defer to an existing span. The submission should make this a single sharp paragraph plus
+a comparison table, and then let the matched-precision experiment against a reimplementation of
+alignment-based completion carry the argument empirically. Anything asserted in prose but not measured
+against that baseline will be discounted.
+6.2 Threat 2 - lower the threshold or improve the detector instead
+Detector-side improvement remains a live alternative: ConRTF at ICDAR 2026 gains up to +1.6 GriTS over
+real-time detector baselines purely through training-time edge weighting, and threshold relaxation requires
+no new components at all. The proposal already schedules the lower-threshold baseline; the submission
+should also report a candidate-budget-matched comparison (same number of retained candidates for both
+methods) and discuss the failure signature of thresholds - duplicates and competing false candidates rather
+than clean recovery. If learned insertion only wins where thresholds fail, say so explicitly; that is a stronger,
+more honest claim than a blanket one.
+6.3 Threat 3 - why not just use a vision-language model?
+The VLM wave is the biggest contextual change since the proposal was drafted: UniTable reports beating
+GPT-4o on table parsing, StrucTab is an ECCV 2026 system with decomposed RL rewards, and
+InstructTable shows instruction-guided multi-stage TSR. The submission needs a positioning paragraph that
+concedes the trend and then draws the line: the proposed module operates at the detection level where precise
+cell geometry is decided; sequence models are optimized for structure and content tokens and their boxes
+typically trail dedicated detectors; the recovery module is orthogonal and attachable to any detector,
+including one inside a VLM pipeline; and it introduces no generative content beyond verified
+image-grounded boxes. If compute allows, one sequence-model comparison on PubTables-1M cell
+localization, or a cited number from prior work, closes this thread decisively.
+6.4 Threat 4 - synthetic deletion is not detector failure
+The proposal handles this correctly by making natural omissions the deciding evaluation, with synthetic
+deletion only for controlled analysis. Two additions will harden it: first, report the omission taxonomy of the
+real detector (how many omissions are filtered versus proposal omissions, and their size, position, and
+span-adjacency distribution) so reviewers can judge ecological validity; second, include the intact-table
+
+--- PAGE 13 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+11
+no-change accuracy so the abstention story is tested on real, unmodified outputs rather than only on
+constructed negatives.
+6.5 Citation additions the paper should make
+Add
+Venue
+Why
+DINO (Zhang et al.)
+ICLR 2023
+Mixed query selection - queries from encoder proposals;
+mechanism relative that must be acknowledged.
+Soft Teacher (Xu et al.) and SSL-OD
+successors
+CVPR 2021+
+Training-time pseudo-label completion of missed boxes; the
+inference-time contrast sharpens the claim.
+DQ-DETR-based TSR
+Pattern
+Recognition
+2023
+Dynamic queries for table cells in a primary detector; closest
+in-TSR query mechanism.
+Formerge
+ICDAR 2023
+Learned span recovery by merging; the span-compatible
+outcome's counterpart.
+GrabTab
+AAAI 2024
+Structural decision-making / component deliberation
+context.
+SepFormer, TABLET, DTSM, SEMv3
+ICDAR/IJCAI
+2024-2025
+Current non-VLM TSR landscape; shows the venue's
+expectations.
+UniTable, TabPedia, UniTabNet,
+InstructTable, StrucTab
+2024-2026
+The VLM line that Threat 3 raises; cite and position against
+it.
+PubTables-v2 (Smock et al.)
+arXiv 2025
+Verified real; ideal future-work testbed for full-page and
+multi-page settings.
+ Table 6.1 - Recommended citation additions beyond the proposal's current 28 references.
+ 
+6.6 Recommended positioning statement
+Rather than proposing another table parser, we study a missing operator in detection-based TSR:
+a learned, detector-conditioned insertion stage that expands an incomplete candidate set only
+when image evidence and surviving-cell context justify it, abstains when they do not, and defers
+to existing spanning structures. We measure it against threshold relaxation and geometric
+completion at matched precision, and we report separately the omissions that no candidate pool
+ever contained - the cases that only insertion can recover.
+Suggested positioning paragraph for the submission
+
+--- PAGE 14 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+12
+FROM AUDIT TO ACTION
+7. Publishability Verdict and ICDAR 2027 Plan
+AUG 18-22
+28 FEB 2027
+15 MAY 2027
+ICDAR 2027 dates - Kuala Lumpur,
+ Malaysia
+ 
+Listed paper submission deadline
+(verify on icdar2027.org)
+ 
+Listed acceptance notification date
+Verdict. The novelty audit removes the main reason a venue would reject this work at the screening stage:
+the core mechanism is not in the literature, the closest priors are identified and distinguishable, and the
+reference list is real. What remains is ordinary scientific risk - the experiments must show what the
+hypotheses promise. For a solo student with one consumer GPU, this is a viable ICDAR-sized project
+precisely because the proposal keeps the host detector frozen and the recovery module small; the decisive
+experiments are inference-plus-light-training workloads, not large-scale retraining.
+7.1 Two realistic paths
+Path
+Scope
+Target
+Trade-off
+A - compressed
+conference push
+(recommended)
+Phases 1-5 of the proposal: TATR host,
+controlled-deletion training, geometric and
+threshold baselines, image-only vs full model
+ablation, natural-omission evaluation on
+PubTables-1M. SciTSR transfer only if time
+remains.
+ICDAR 2027 (deadline
+28 Feb 2027, about 4.3
+months away)
+Tight but feasible;
+cross-dataset and
+second-detector
+studies move to the
+journal extension.
+B - full development
+cycle
+All seven proposal phases including WTW,
+SciTSR-COMP, a second host detector, and
+efficiency analysis.
+IJDAR (rolling) or
+Pattern Recognition;
+ICDAR 2028 if
+preferred
+Uses the full six
+months; a stronger
+journal-depth
+paper; delays the
+first publication.
+ Table 7.1 - Two paths consistent with the audit's findings and the stated constraints.
+ 
+The recommended path is A with a journal extension planned from the start: ICDAR values
+document-specific insight, careful benchmarking, and honest analysis, and the intervention study plus the
+new evaluation protocol fits that profile. The six-month plan the user stated still works - it simply ends in a
+journal submission for the extended version while the conference version is prepared inside the first four and
+a half months.
+7.2 Feasibility notes for one consumer GPU
+•  Freeze the host: TATR structure-recognition weights are public (Hugging Face, MIT license) and
+require no retraining; run inference once over the training split and cache candidate sets and image
+features so the recovery module trains from caches.
+
+--- PAGE 15 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+13
+•  Keep the module small: a ResNet-50/FPN or even a frozen TATR backbone feature pyramid plus a
+set-transformer context encoder and a light query decoder stays in the few million-parameter range and
+trains on a single 24 GB card.
+•  Subsample PubTables-1M: 100-200K tables are enough to train and validate the module; report the
+subset policy. Synthetic deletion generation is CPU-side and cheap.
+•  Budget the eval: natural-omission evaluation is one forward pass per test table plus matching
+bookkeeping; plan storage for per-table predictions to enable the filtered-versus-proposal analysis.
+7.3 The killer experiment list
+#
+Experiment
+Decides
+E1
+Natural omission profile of TATR on PubTables-1M test at the
+operating threshold, split into filtered vs proposal omissions
+H1; whether the problem is big enough to
+matter
+E2
+Lower-threshold baseline at matched candidate budget
+H2; the cheapest competitor
+E3
+Geometric completion baseline (alignment-based, reimplemented
+on the same detector)
+Whether learned insertion beats the closest
+prior mechanism
+E4
+2x2 ablation: context-only, image-only, full model, no-recovery
+control
+H4; both evidence sources matter
+E5
+With-vs-without no-insertion class and span-compatible head
+H5; span violation rate and no-change
+accuracy
+E6
+Headline: recovery recall on proposal omissions at matched
+insertion precision (IoU 0.50 and 0.75)
+The paper's central empirical claim
+E7
+End-to-end GriTS/TEDS with the recovery module attached
+Whether the intervention improves the final
+structure metric, reported after E1-E6
+ Table 7.2 - Minimum evidence set for a credible ICDAR submission.
+ 
+The proposal's own go/no-go rule remains the right one and is endorsed unchanged: proceed to the larger
+architecture only if the full model beats geometric completion and image-only recovery on natural omissions
+at matched insertion precision, with gains that include proposal omissions absent from the generous pre-filter
+pool. If the gate fails, the honest paper is an analysis of where and why learned insertion does not beat
+rule-based completion on canonicalized data - ICDAR publishes such studies, and the evaluation protocol
+alone keeps it useful.
+7.4 Suggested framing
+Keep the proposal's title direction; it is accurate and specific. One refinement for the conference version:
+foreground the decision, not the architecture, because the three-way decision is the most defensible novelty.
+A candidate title is: When to Insert: Learning Detection-Conditioned Cell Recovery for Table
+Structure Recognition, with the abstract leading on the filtered-versus-proposal omission distinction and
+
+--- PAGE 16 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+14
+the matched-precision comparison. The main figure should be the proposal's Figure 1 extended with one
+hard negative - a vacancy that the model correctly refuses to fill because a spanning cell explains it; reviewers
+remember the refusal case longer than the recovery case.
+ANNOTATED AND LINK-CHECKED OCTOBER 2026
+8. Verified Reading List
+The following items were located and verified during this audit. Group 1 is the host platform and evaluation
+context; Group 2 is the closest prior art the paper must be written against; Group 3 is the mechanism-relevant
+adjacent work; Group 4 is the 2025-2026 TSR landscape the related-work section must reflect; Group 5 is
+metrics and citation hygiene.
+Group 1 - host detector, datasets, evaluation context
+B. Smock, R. Pesala, R. Abraham. PubTables-1M: Towards Comprehensive Table Extraction from Unstructured
+ Documents. CVPR 2022. (arXiv:2110.00061; TATR weights on Hugging Face, MIT license.)
+B. Smock et al. PubTables-v2: A New Large-Scale Dataset for Full-Page and Multi-Page Table Extraction.
+ arXiv:2512.10888, 2025. First multi-page TSR benchmark; verified during this audit; ideal future-work testbed.
+Z. Chi et al. SciTSR: A Dataset for Complex Scientific Table Structure Recognition. 2021. 15,000 scientific tables;
+ SciTSR-COMP complex subset.
+R. Long et al. Parsing Table Structures in the Wild. ICCV 2021. WTW; deformation stress test.
+ 
+Group 2 - closest prior art (write the paper against these)
+L. Qiao et al. LGPMA: Complicated Table Structure Recognition with Local and Global Pyramid Mask Alignment.
+ ICDAR 2021, pp. 99-114. Empty-cell searching and merging; ICDAR 2021 best industry paper.
+L. G. Singh, S. Middleton. Tabular Context-Aware Optical Character Recognition and Tabular Data Reconstruction for
+ Historical Records. IJDAR, vol. 28, 2025. (s10032-025-00543-9) Alignment-based missing-cell inference - the
+geometric completion baseline.
+L. G. Singh et al. Data Rescue of Historical Tables through Semi-Supervised Table Structure Recognition. IJDAR, 2025.
+ (s10032-025-00562-6)
+N. Q. Nguyen et al. Formerge: Recover Spanning Cells in Complex Table Structure Using Transformer Network.
+ ICDAR 2023, pp. 522-534.
+H. Liu et al. Grab What You Need: Rethinking Complex Table Structure Recognition with Flexible Components
+ Deliberation. AAAI 2024.
+Robust Table Structure Recognition with Dynamic Queries Enhanced Detection Transformer. Pattern Recognition,
+ 2023. (DQ-DETR-based TSR)
+Group 3 - mechanism relatives outside TSR (cite preemptively)
+H. Zhang et al. DINO: DETR with Improved DeNoising Anchor Boxes for End-to-End Object Detection. ICLR 2023.
+ (arXiv:2203.03605; mixed query selection.)
+M. Xu et al. End-to-End Semi-Supervised Object Detection with Soft Teacher. CVPR 2021. Training-time pseudo-label
+ completion line.
+Group 4 - 2025-2026 TSR landscape (verified during this audit)
+
+--- PAGE 17 ---
+Novelty Audit: Detection-Conditioned Cell Insertion for Table Structure Recognition
+Independent Novelty Audit - October 2026
+15
+E. Thomas et al. ConRTF: Edge-Constrained Boundary Distribution Refinement for Realtime TransFormer Table
+ Structure Recognition. ICDAR 2026. (arXiv:2607.00734)
+L. Hamdi et al. TableSeq: Unified Generation of Structure, Content, and Layout. arXiv:2604.16070, 2026.
+ L. Hamdi et al. FastTab: A Fast Table Recognizer with a Tiny Recursive Module and 1D Transformers.
+ arXiv:2605.22422, 2026.
+G. Li et al. StrucTab: A Structured Optimization Framework for Table Parsing. ECCV 2026. (arXiv:2606.29905;
+ TableVerse-5K benchmark.)
+J. Li et al. Text Prior-Guided Cell Alignment with Transformer for Robust Table Structure Recognition. Pattern
+ Recognition, 2026, 114832.
+L. Liu, C. Yang. OG-HFYOLO: Orientation Gradient Guidance and Heterogeneous Feature Fusion for Deformation
+ Table Cell Instance Segmentation. arXiv:2504.20682; includes the DWTAL dataset.
+A. Xiao, C. Yang. Towards One-Stage End-to-End Table Structure Recognition with Parallel Regression for Diverse
+ Scenarios (TableCenterNet). arXiv:2504.17522, 2025.
+L. Hu, S. Huang. Enhancing Table Structure Recognition via Bounding Box Guidance (BGTR). ICPR 2024.
+ (arXiv:2609.08705, archival upload Sep 2026 - cite as ICPR 2024.)
+L. Hamdi et al. InstructTable: Improving Table Structure Recognition Through Instructions. arXiv:2604.02880, 2026.
+ S. Peng et al. UniTable: Towards a Unified Framework for Table Recognition via Self-Supervised Pretraining.
+ arXiv:2403.04822, 2024. Reports surpassing GPT-4o on table parsing; the VLM-positioning anchor.
+SepFormer: Coarse-to-Fine Separator Regression Network for Table Structure Recognition. ICDAR 2025. TABLET:
+ Table Structure Recognition using Encoder-only Transformers. ICDAR 2025. DTSM. ICDAR 2024. SEMv3.
+IJCAI 2024.
+Group 5 - metrics and citation hygiene
+B. Smock, R. Pesala, R. Abraham. GriTS: Grid Table Similarity Metric for Table Structure Recognition. WACV 2023.
+ (arXiv:2203.12555.)
+X. Zhong, J. Tang, E. Yepes. Image-based Table Recognition: Data, Model, and Evaluation. ECCV 2020.
+ (arXiv:1905.13391.) This is the correct TEDS citation - replace the proposal's reference [19] (arXiv:2208.00385).

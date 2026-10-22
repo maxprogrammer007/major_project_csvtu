@@ -1,0 +1,36 @@
+{
+  "benchmark_dataset": "PubTables-v2 (Zero-Shot Cross-Domain)",
+  "total_tables": 100,
+  "total_gt_cells": 16537,
+  "base_detector": {
+    "tp": 15830,
+    "fp": 2059,
+    "recall_pct": 95.72473846525972,
+    "precision_pct": 88.49013360165465
+  },
+  "omission_analysis": {
+    "total_omissions": 707,
+    "absolute_omission_rate_pct": 4.275261534740279,
+    "filtered_omissions": 246,
+    "filtered_omissions_pct": 34.794908062234796,
+    "proposal_omissions": 461,
+    "proposal_omissions_pct": 65.2050919377652
+  },
+  "singh_middleton_baseline": {
+    "total_inferred": 2127,
+    "valid_recoveries": 118,
+    "false_insertions": 2009,
+    "span_violations": 1991,
+    "span_violation_rate_pct": 93.60601786553832,
+    "inferred_precision_pct": 5.5477197931358715,
+    "reconstructed_recall_pct": 96.4382898953861,
+    "reconstructed_precision_pct": 79.67625899280576,
+    "precision_penalty_pts": 8.813874608848892
+  },
+  "threshold_relaxation_baseline": {
+    "tau": 0.05,
+    "reconstructed_recall_pct": 92.29606337304227,
+    "reconstructed_precision_pct": 80.86786054890325,
+    "precision_penalty_pts": 7.622273052751396
+  }
+}

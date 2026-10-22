@@ -1,0 +1,676 @@
+{
+  "matcher": "run_full_metric_suite.evaluate_matching",
+  "token_condition": "ocr",
+  "n_tables": 100,
+  "stages": {
+    "raw_grid": {
+      "ops_total": 0,
+      "ops_flagged_incorrect": 0,
+      "incorrect_rate": null,
+      "cells_total": 7069,
+      "tp_total": 1833,
+      "fp_total": 5236,
+      "precision": 0.2593,
+      "teds_s_mean": 0.668
+    },
+    "col_merging": {
+      "ops_total": 1,
+      "ops_flagged_incorrect": 0,
+      "incorrect_rate": 0.0,
+      "cells_total": 6904,
+      "tp_total": 1764,
+      "fp_total": 5140,
+      "precision": 0.2555,
+      "teds_s_mean": 0.6653
+    },
+    "row_merging": {
+      "ops_total": 10,
+      "ops_flagged_incorrect": 8,
+      "incorrect_rate": 0.8,
+      "cells_total": 6414,
+      "tp_total": 1548,
+      "fp_total": 4866,
+      "precision": 0.2413,
+      "teds_s_mean": 0.6383
+    },
+    "remove_seps_0.2": {
+      "ops_total": 209,
+      "ops_flagged_incorrect": 27,
+      "incorrect_rate": 0.1292,
+      "cells_total": 4621,
+      "tp_total": 1302,
+      "fp_total": 3319,
+      "precision": 0.2818,
+      "teds_s_mean": 0.7092
+    },
+    "remove_seps_0.4": {
+      "ops_total": 27,
+      "ops_flagged_incorrect": 6,
+      "incorrect_rate": 0.2222,
+      "cells_total": 4404,
+      "tp_total": 1216,
+      "fp_total": 3188,
+      "precision": 0.2761,
+      "teds_s_mean": 0.694
+    },
+    "merge_header_v2": {
+      "ops_total": 71,
+      "ops_flagged_incorrect": 0,
+      "incorrect_rate": 0.0,
+      "cells_total": 4333,
+      "tp_total": 1203,
+      "fp_total": 3130,
+      "precision": 0.2776,
+      "teds_s_mean": 0.6888
+    }
+  },
+  "ilp_merge_correctness": {
+    "tables": 100,
+    "selected_merge_candidates": 69,
+    "correct": 50,
+    "incorrect": 19,
+    "per_table": {
+      "pubtabnet_tok_550868": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_551822": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_554187": {
+        "selected_merges": 5,
+        "correct": 5,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_562384": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_562731": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_563699": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_564154": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_564424": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_566196": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_566350": {
+        "selected_merges": 6,
+        "correct": 6,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_566468": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_571472": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_573003": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_573203": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_577340": {
+        "selected_merges": 3,
+        "correct": 1,
+        "incorrect": 2,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_578521": {
+        "selected_merges": 8,
+        "correct": 6,
+        "incorrect": 2,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_579989": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_581116": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_581358": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_586047": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_586722": {
+        "selected_merges": 2,
+        "correct": 1,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_587456": {
+        "selected_merges": 3,
+        "correct": 3,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_587476": {
+        "selected_merges": 2,
+        "correct": 2,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_590930": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_592865": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_595591": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_597425": {
+        "selected_merges": 2,
+        "correct": 2,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_602980": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_613461": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_613565": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_614279": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_616588": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_618932": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_620192": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_622581": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_622741": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_624025": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_626798": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_627549": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_627747": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_629558": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_630478": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_634237": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_634445": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_634629": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_634947": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_638457": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_639579": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_641678": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_642815": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_642953": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_644070": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_644329": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_650505": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_650560": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_656080": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_656835": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_657150": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_658456": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_664492": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_664752": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_665351": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_665630": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_670433": {
+        "selected_merges": 2,
+        "correct": 2,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_672352": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_674911": {
+        "selected_merges": 2,
+        "correct": 0,
+        "incorrect": 2,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_676694": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_677385": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_678100": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_681901": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_683662": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_684582": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_686848": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_689997": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_693183": {
+        "selected_merges": 3,
+        "correct": 2,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_695383": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_698176": {
+        "selected_merges": 2,
+        "correct": 1,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_699822": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_701544": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_705976": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_707297": {
+        "selected_merges": 3,
+        "correct": 3,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_707628": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_709582": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_711083": {
+        "selected_merges": 2,
+        "correct": 0,
+        "incorrect": 2,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_713201": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_713574": {
+        "selected_merges": 5,
+        "correct": 4,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_713774": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_719903": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_721169": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_721570": {
+        "selected_merges": 1,
+        "correct": 0,
+        "incorrect": 1,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_722429": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_722546": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_723237": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_723463": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_723545": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_724618": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_729453": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_730065": {
+        "selected_merges": 2,
+        "correct": 2,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_730273": {
+        "selected_merges": 1,
+        "correct": 1,
+        "incorrect": 0,
+        "geometry_ok": true
+      },
+      "pubtabnet_tok_731135": {
+        "selected_merges": 0,
+        "correct": 0,
+        "incorrect": 0,
+        "geometry_ok": true
+      }
+    }
+  },
+  "runtime_s": 81.2
+}

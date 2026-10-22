@@ -1,0 +1,49 @@
+==============================================================================
+A. TATR — greedy NMS vs exact MWIS (setup + significance)
+==============================================================================
+  dataset: PubTables-1M (test-sample crop images, 100 tables)
+  model: microsoft/table-transformer-structure-recognition-v1.1-all
+  detection_score_threshold: 0.5
+  conflict_criterion: pairwise overlap ratio (intersection over smaller box) >= 0.25, same axis rows/columns; components = connected components of the conflict graph; NMS resolves each component by score-max node
+  note: matching IoU for TP counting = 0.25 (canonical audit matcher)
+
+  file: tatr_h2_per_table_metrics.csv | greedy col: heur_tp | MWIS col: opt_tp
+  TATR TP: MWIS vs greedy-NMS: mean diff (B-A) = +0.0100 | W/L/T = 1/0/99 | t = 1.000, p = 3.197e-01
+      Wilcoxon p = 3.173e-01 | bootstrap 95% CI [+0.0000, +0.0300]
+      McNemar exact (discordant 1/0) p = 1.0000
+
+==============================================================================
+B. LORE-TSR — upstream threshold policy tau=0.35 vs tau=0.20
+==============================================================================
+  file: lore_per_table_sweep_results.csv | columns: ['table_id', 'tau', 'pred_count', 'tp', 'precision', 'recall', 'f1']
+  metric: tp
+  LORE tp: tau=0.2 vs tau=0.35: mean diff (B-A) = +33.5000 | W/L/T = 100/0/0 | t = 16.790, p = 1.002e-30
+      Wilcoxon p = 3.861e-18 | bootstrap 95% CI [+29.6600, +37.5000]
+      McNemar exact (discordant 100/0) p = 0.0000
+  metric: precision
+  LORE precision: tau=0.2 vs tau=0.35: mean diff (B-A) = +0.0002 | W/L/T = 7/13/80 | t = 0.063, p = 9.501e-01
+      Wilcoxon p = 3.507e-01 | bootstrap 95% CI [-0.0053, +0.0071]
+      McNemar exact (discordant 7/13) p = 0.2632
+  metric: precision
+  LORE precision: tau=0.2 vs tau=0.35: mean diff (B-A) = +0.0002 | W/L/T = 7/13/80 | t = 0.063, p = 9.501e-01
+      Wilcoxon p = 3.507e-01 | bootstrap 95% CI [-0.0053, +0.0071]
+      McNemar exact (discordant 7/13) p = 0.2632
+  metric: f1
+  LORE f1: tau=0.2 vs tau=0.35: mean diff (B-A) = +0.5293 | W/L/T = 100/0/0 | t = 25.904, p = 6.821e-46
+      Wilcoxon p = 3.889e-18 | bootstrap 95% CI [+0.4894, +0.5692]
+      McNemar exact (discordant 100/0) p = 0.0000
+
+==============================================================================
+C. Cross-checks + prereg SD extraction
+==============================================================================
+  metric_suite_results.csv: N=100 tables, total GT cells=5646
+  raw=1833 h1gt=1203 h1ocr=1336 h2gt=1839 h2ocr=1836
+  SPLERGE cell TP: H2_OCR (ILP) vs H1_OCR (heuristic): mean diff (B-A) = +5.0000 | W/L/T = 71/0/29 | t = 6.665, p = 1.515e-09
+      Wilcoxon p = 2.230e-13 | bootstrap 95% CI [+3.6398, +6.5800]
+      McNemar exact (discordant 71/0) p = 0.0000
+
+  tableformer_mwis_factorial_results.csv: N=100 | raw=5204 post=? mwis=5202
+  prereg H_scale_2: SD of paired (mwis - raw) TP = 0.1407 | mean = -0.0200
+  TableFormer cell TP: MWIS vs raw: mean diff (B-A) = -0.0200 | W/L/T = 0/2/98 | t = -1.421, p = 1.583e-01
+      Wilcoxon p = 1.573e-01 | bootstrap 95% CI [-0.0500, +0.0000]
+      McNemar exact (discordant 0/2) p = 0.5000

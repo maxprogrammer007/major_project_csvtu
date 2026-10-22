@@ -1,0 +1,61 @@
+==============================================================================
+E12 — BRIDGE VALIDATION: canonical pipeline vs frozen ledger
+==============================================================================
+
+[1] metric_suite_results.csv
+  [PASS ] n_tables                                     computed=100 expected=100
+  [PASS ] total_gt_cells                               computed=5646 expected=5646
+  [PASS ] splerge_raw_tp                               computed=1833 expected=1833
+  [PASS ] splerge_h1_gt_tp                             computed=1203 expected=1203
+  [PASS ] splerge_h1_ocr_tp                            computed=1336 expected=1336
+  [DRIFT] splerge_h2_gt_tp                             computed=1839 expected=1836  (1,839 is superseded)
+  [PASS ] splerge_h2_ocr_tp                            computed=1836 expected=1836
+  [INFO ] greedy_ocr_tp (suite column: g_ocr_tp)       computed=504 expected=None  (informational; historical candidates 504/566)
+  [PASS ] teds_s[raw]                                  computed=0.668 expected=0.668
+  [PASS ] teds_s[h1_gt]                                computed=0.6888 expected=0.6888
+  [PASS ] teds_s[h1_ocr]                               computed=0.7318 expected=0.7318
+  [PASS ] teds_s[h2_gt]                                computed=0.6733 expected=0.6733
+  [PASS ] teds_s[h2_ocr]                               computed=0.6725 expected=0.6725
+  [PASS ] grits_top[raw]                               computed=0.7575 expected=0.7575
+  [PASS ] grits_top[h1_ocr]                            computed=0.7908 expected=0.7908
+  [PASS ] grits_top[h2_ocr]                            computed=0.7605 expected=0.7605
+
+[2] greedy_baseline_results.csv
+  [PASS ] greedy_csv_exact_tp (sanity vs ILP)          computed=1836 expected=1836
+  [INFO ] greedy_csv_std_seed42_tp                     computed=710 expected=None  (informational; resolves 504-vs-566)
+
+[3] lore_threshold_sweep_results.csv
+  [PASS ] lore tau=0.35 tp                             computed=1761 expected=1761
+  [PASS ] lore tau=0.35 precision                      computed=0.9904 expected=0.9904
+  [PASS ] lore tau=0.35 recall                         computed=0.3119 expected=0.3119
+  [PASS ] lore tau=0.2 tp                              computed=5111 expected=5111
+  [PASS ] lore tau=0.2 precision                       computed=0.9918 expected=0.9918
+  [PASS ] lore tau=0.2 recall                          computed=0.9052 expected=0.9052
+  [PASS ] lore tau=0.01 fp                             computed=4576 expected=4576
+
+[4] tableformer factorial CSVs (canonical post-supersession)
+  [PASS ] tableformer_raw_tp                           computed=5204 expected=5204  (Fig.1 legacy 5,203 superseded)
+  [PASS ] tableformer_mwis_tp                          computed=5202 expected=5202
+  [PASS ] tableformer_gtsnap_on_tp                     computed=5488 expected=5488
+  [PASS ] tableformer_gtsnap_off_tp                    computed=5082 expected=5082
+  [PASS ] tableformer_ocrsnap_on_tp                    computed=3902 expected=3902
+  [PASS ] tableformer_ocrsnap_off_tp                   computed=4921 expected=4921
+
+[5] tatr_h2_per_table_metrics.csv present (topology constants recorded from exp1c audit: 1,867 candidates | 1,832 K1 | 13 K2 | 3 P3 | +1 TP)
+
+[6] independent SPLERGE pipeline recompute (from caches)
+    ... recompute 25/100 (3s)
+    ... recompute 50/100 (8s)
+    ... recompute 75/100 (12s)
+    ... recompute 100/100 (14s)
+  [PASS ] recompute total_gt_cells                     computed=5646 expected=5646
+  [PASS ] recompute raw_tp                             computed=1833 expected=1833
+  [PASS ] recompute h1_ocr_tp                          computed=1336 expected=1336
+  [PASS ] recompute h2_ocr_tp (ILP)                    computed=1836 expected=1836
+  [PASS ] recompute greedy_normalized_tp               computed=1836 expected=1836
+  [INFO ] recompute greedy_unnormalized_tp = 504 (resolves 504-vs-566; update ledger + paper to this value)
+
+==============================================================================
+VERDICT: ALL CRITICAL CHECKS PASS — ledger is bridge-validated
+(1 drift(s) total, superseded values documented: 4)
+==============================================================================

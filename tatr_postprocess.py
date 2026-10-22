@@ -710,6 +710,8 @@ def table_structure_to_cells(table_structures, table_spans, table_bbox):
             column_rect = Rect(list(column['bbox']))
             row_rect = Rect(list(row['bbox']))
             cell_rect = row_rect.intersect(column_rect)
+            if cell_rect.get_area() <= 0:
+                continue
             header = 'header' in row and row['header']
             cell = {'bbox': list(cell_rect), 'column_nums': [column_num], 'row_nums': [row_num],
                     'header': header}
@@ -717,8 +719,8 @@ def table_structure_to_cells(table_structures, table_spans, table_bbox):
             cell['subcell'] = False
             for supercell in supercells:
                 supercell_rect = Rect(list(supercell['bbox']))
-                if (supercell_rect.intersect(cell_rect).get_area()
-                        / cell_rect.get_area()) > 0.5:
+                cell_area = cell_rect.get_area()
+                if cell_area > 0 and (supercell_rect.intersect(cell_rect).get_area() / cell_area) > 0.5:
                     cell['subcell'] = True
                     break
 
@@ -739,7 +741,7 @@ def table_structure_to_cells(table_structures, table_spans, table_bbox):
         for subcell in subcells:
             subcell_rect = Rect(list(subcell['bbox']))
             subcell_rect_area = subcell_rect.get_area()
-            if (subcell_rect.intersect(supercell_rect).get_area()
+            if subcell_rect_area > 0 and (subcell_rect.intersect(supercell_rect).get_area()
                     / subcell_rect_area) > 0.5:
                 if cell_rect is None:
                     cell_rect = Rect(list(subcell['bbox']))

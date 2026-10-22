@@ -1,0 +1,711 @@
+{
+  "pred_file": "D:\\RRC\\major_project_csvtu\\scratch\\lore_100_tables_predictions.json",
+  "iou_threshold": 0.5,
+  "n_tables": 100,
+  "n_tp_discrepancy": 0,
+  "n_ambiguous": 0,
+  "discrepancy_tables": [],
+  "ambiguous_tables": [],
+  "per_table": [
+    {
+      "table_id": "pubtabnet_tok_550868",
+      "tp_hungarian": 63,
+      "tp_greedy": 63,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_551822",
+      "tp_hungarian": 47,
+      "tp_greedy": 47,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_554187",
+      "tp_hungarian": 72,
+      "tp_greedy": 72,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_562384",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_562731",
+      "tp_hungarian": 16,
+      "tp_greedy": 16,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_563699",
+      "tp_hungarian": 56,
+      "tp_greedy": 56,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_564154",
+      "tp_hungarian": 21,
+      "tp_greedy": 21,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_564424",
+      "tp_hungarian": 51,
+      "tp_greedy": 51,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_566196",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_566350",
+      "tp_hungarian": 92,
+      "tp_greedy": 92,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_566468",
+      "tp_hungarian": 20,
+      "tp_greedy": 20,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_571472",
+      "tp_hungarian": 22,
+      "tp_greedy": 22,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_573003",
+      "tp_hungarian": 77,
+      "tp_greedy": 77,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_573203",
+      "tp_hungarian": 17,
+      "tp_greedy": 17,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_577340",
+      "tp_hungarian": 56,
+      "tp_greedy": 56,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_578521",
+      "tp_hungarian": 87,
+      "tp_greedy": 87,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_579989",
+      "tp_hungarian": 30,
+      "tp_greedy": 30,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_581116",
+      "tp_hungarian": 75,
+      "tp_greedy": 75,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_581358",
+      "tp_hungarian": 66,
+      "tp_greedy": 66,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_586047",
+      "tp_hungarian": 49,
+      "tp_greedy": 49,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_586722",
+      "tp_hungarian": 98,
+      "tp_greedy": 98,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_587456",
+      "tp_hungarian": 17,
+      "tp_greedy": 17,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_587476",
+      "tp_hungarian": 34,
+      "tp_greedy": 34,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_590930",
+      "tp_hungarian": 24,
+      "tp_greedy": 24,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_592865",
+      "tp_hungarian": 23,
+      "tp_greedy": 23,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_595591",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_597425",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_602980",
+      "tp_hungarian": 44,
+      "tp_greedy": 44,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_613461",
+      "tp_hungarian": 55,
+      "tp_greedy": 55,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_613565",
+      "tp_hungarian": 21,
+      "tp_greedy": 21,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_614279",
+      "tp_hungarian": 86,
+      "tp_greedy": 86,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_616588",
+      "tp_hungarian": 35,
+      "tp_greedy": 35,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_618932",
+      "tp_hungarian": 16,
+      "tp_greedy": 16,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_620192",
+      "tp_hungarian": 44,
+      "tp_greedy": 44,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_622581",
+      "tp_hungarian": 33,
+      "tp_greedy": 33,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_622741",
+      "tp_hungarian": 18,
+      "tp_greedy": 18,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_624025",
+      "tp_hungarian": 49,
+      "tp_greedy": 49,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_626798",
+      "tp_hungarian": 92,
+      "tp_greedy": 92,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_627549",
+      "tp_hungarian": 65,
+      "tp_greedy": 65,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_627747",
+      "tp_hungarian": 25,
+      "tp_greedy": 25,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_629558",
+      "tp_hungarian": 34,
+      "tp_greedy": 34,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_630478",
+      "tp_hungarian": 84,
+      "tp_greedy": 84,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_634237",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_634445",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_634629",
+      "tp_hungarian": 30,
+      "tp_greedy": 30,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_634947",
+      "tp_hungarian": 97,
+      "tp_greedy": 97,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_638457",
+      "tp_hungarian": 24,
+      "tp_greedy": 24,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_639579",
+      "tp_hungarian": 60,
+      "tp_greedy": 60,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_641678",
+      "tp_hungarian": 52,
+      "tp_greedy": 52,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_642815",
+      "tp_hungarian": 30,
+      "tp_greedy": 30,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_642953",
+      "tp_hungarian": 25,
+      "tp_greedy": 25,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_644070",
+      "tp_hungarian": 16,
+      "tp_greedy": 16,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_644329",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_650505",
+      "tp_hungarian": 28,
+      "tp_greedy": 28,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_650560",
+      "tp_hungarian": 28,
+      "tp_greedy": 28,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_656080",
+      "tp_hungarian": 99,
+      "tp_greedy": 99,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_656835",
+      "tp_hungarian": 56,
+      "tp_greedy": 56,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_657150",
+      "tp_hungarian": 30,
+      "tp_greedy": 30,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_658456",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_664492",
+      "tp_hungarian": 18,
+      "tp_greedy": 18,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_664752",
+      "tp_hungarian": 35,
+      "tp_greedy": 35,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_665351",
+      "tp_hungarian": 43,
+      "tp_greedy": 43,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_665630",
+      "tp_hungarian": 12,
+      "tp_greedy": 12,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_670433",
+      "tp_hungarian": 53,
+      "tp_greedy": 53,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_672352",
+      "tp_hungarian": 12,
+      "tp_greedy": 12,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_674911",
+      "tp_hungarian": 66,
+      "tp_greedy": 66,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_676694",
+      "tp_hungarian": 30,
+      "tp_greedy": 30,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_677385",
+      "tp_hungarian": 91,
+      "tp_greedy": 91,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_678100",
+      "tp_hungarian": 13,
+      "tp_greedy": 13,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_681901",
+      "tp_hungarian": 49,
+      "tp_greedy": 49,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_683662",
+      "tp_hungarian": 91,
+      "tp_greedy": 91,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_684582",
+      "tp_hungarian": 78,
+      "tp_greedy": 78,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_686848",
+      "tp_hungarian": 93,
+      "tp_greedy": 93,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_689997",
+      "tp_hungarian": 43,
+      "tp_greedy": 43,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_693183",
+      "tp_hungarian": 29,
+      "tp_greedy": 29,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_695383",
+      "tp_hungarian": 40,
+      "tp_greedy": 40,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_698176",
+      "tp_hungarian": 26,
+      "tp_greedy": 26,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_699822",
+      "tp_hungarian": 26,
+      "tp_greedy": 26,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_701544",
+      "tp_hungarian": 7,
+      "tp_greedy": 7,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_705976",
+      "tp_hungarian": 49,
+      "tp_greedy": 49,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_707297",
+      "tp_hungarian": 25,
+      "tp_greedy": 25,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_707628",
+      "tp_hungarian": 48,
+      "tp_greedy": 48,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_709582",
+      "tp_hungarian": 75,
+      "tp_greedy": 75,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_711083",
+      "tp_hungarian": 72,
+      "tp_greedy": 72,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_713201",
+      "tp_hungarian": 98,
+      "tp_greedy": 98,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_713574",
+      "tp_hungarian": 28,
+      "tp_greedy": 28,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_713774",
+      "tp_hungarian": 30,
+      "tp_greedy": 30,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_719903",
+      "tp_hungarian": 37,
+      "tp_greedy": 37,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_721169",
+      "tp_hungarian": 29,
+      "tp_greedy": 29,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_721570",
+      "tp_hungarian": 17,
+      "tp_greedy": 17,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_722429",
+      "tp_hungarian": 46,
+      "tp_greedy": 46,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_722546",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_723237",
+      "tp_hungarian": 20,
+      "tp_greedy": 20,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_723463",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_723545",
+      "tp_hungarian": 37,
+      "tp_greedy": 37,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_724618",
+      "tp_hungarian": 59,
+      "tp_greedy": 59,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_729453",
+      "tp_hungarian": 100,
+      "tp_greedy": 100,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_730065",
+      "tp_hungarian": 58,
+      "tp_greedy": 58,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_730273",
+      "tp_hungarian": 26,
+      "tp_greedy": 26,
+      "ambiguous": false,
+      "swap": null
+    },
+    {
+      "table_id": "pubtabnet_tok_731135",
+      "tp_hungarian": 82,
+      "tp_greedy": 82,
+      "ambiguous": false,
+      "swap": null
+    }
+  ]
+}

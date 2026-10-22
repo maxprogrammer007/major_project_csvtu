@@ -1,0 +1,7 @@
+Highlights (Pattern Recognition Letters submission; 3-5 bullets, <=85 chars each)
+
+- Heuristic merging destroys 27-34% of valid cells in split-based table recognition
+- Exact set-packing restores raw true positives: 71 wins, 29 ties, 0 losses
+- Unnormalized greedy collapses to 27.5% recall; normalized greedy matches the ILP
+- LORE recall rises 31% to 91% from one threshold change at 99.2% precision
+- GT-derived text layer inflates TableFormer scores; TEDS-S rewards over-pruning

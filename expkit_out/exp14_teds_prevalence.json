@@ -1,0 +1,50 @@
+{
+ "n_tables": 100,
+ "paired": {
+  "wins": 57,
+  "ties": 9,
+  "losses": 34,
+  "mean_advantage": 0.059330999999999995,
+  "wilcoxon_p": 0.00246335425031614,
+  "paired_t_p": 0.004403773919804194
+ },
+ "prevalence_grid": {
+  "D=0.3": {
+   "n_severe": 38,
+   "severe_fraction": 0.38,
+   "n_teds_ge_0.8": 11,
+   "pct_of_corpus_teds_ge_0.8": 0.11,
+   "pct_of_severe_teds_ge_0.8": 0.2895,
+   "n_teds_ge_0.9": 5,
+   "pct_of_corpus_teds_ge_0.9": 0.05,
+   "pct_of_severe_teds_ge_0.9": 0.1316
+  },
+  "D=0.5": {
+   "n_severe": 29,
+   "severe_fraction": 0.29,
+   "n_teds_ge_0.8": 7,
+   "pct_of_corpus_teds_ge_0.8": 0.07,
+   "pct_of_severe_teds_ge_0.8": 0.2414,
+   "n_teds_ge_0.9": 3,
+   "pct_of_corpus_teds_ge_0.9": 0.03,
+   "pct_of_severe_teds_ge_0.9": 0.1034
+  },
+  "D=0.7": {
+   "n_severe": 15,
+   "severe_fraction": 0.15,
+   "n_teds_ge_0.8": 1,
+   "pct_of_corpus_teds_ge_0.8": 0.01,
+   "pct_of_severe_teds_ge_0.8": 0.0667,
+   "n_teds_ge_0.9": 1,
+   "pct_of_corpus_teds_ge_0.9": 0.01,
+   "pct_of_severe_teds_ge_0.9": 0.0667
+  }
+ },
+ "association": {
+  "pearson_r": -0.09481073077478663,
+  "pearson_p": 0.35057269565810195,
+  "spearman_rho": -0.13751255988210567,
+  "spearman_p": 0.17468160305056452
+ },
+ "scatter_csv": "D:\\RRC\\major_project_csvtu\\expkit_out\\exp14_teds_scatter.csv"
+}

@@ -1,0 +1,622 @@
+--- PAGE 1 ---
+Learning to Insert: Image-Grounded Cell Recovery
+from Incomplete Table Structure Predictions
+Project Proposal
+October 2026
+Abstract
+Table Structure Recognition (TSR) systems usually predict a set of table cells and then
+convert these predictions into a final logical structure. A recurring failure is an omitted cell
+instance: the image may contain a valid cell, but the detector does not provide a usable
+candidate for it. A later selector can choose among existing candidates, but it cannot select a
+candidate that is absent. This proposal studies whether a TSR model can explicitly expand
+an incomplete candidate set by inserting new cell hypotheses from the table image and the
+surviving detected cells.
+The project is deliberately narrower than general table reconstruction. The proposed
+task is detection-conditioned cell insertion : given a table image and an incomplete set of
+cell candidates produced by a base detector, predict whether an additional cell should be
+inserted and, when appropriate, estimate its box and logical span. The insertion decoder
+must also support a no-insertion outcome and avoid subdividing a valid spanning cell. The
+first implementation will attach a lightweight recovery decoder to a fixed cell detector, with
+a set or graph encoder for surviving-cell context and image-attention queries for candidate
+generation. Training will start with controlled deletion of correct candidates and will then
+move to natural detector omissions. Evaluation will distinguish cells that were merely filtered
+from cells absent even from a generous pre-filter candidate pool.
+The literature review shows that missing-cell reconstruction, vacancy detection, topology-
+aware refinement, and joint spatial-logical prediction have all been studied. The proposed
+contribution is therefore not “missing-cell reconstruction” in general. The narrower question
+is whether a learned, variable-cardinality insertion operator can expand an incomplete
+detector-produced candidate set using raster evidence and surviving-cell context, while
+explicitly learning when notto insert. The core evidence required is recovery of natural
+omissions at matched insertion precision, with ablations showing that both image evidence
+and surviving-cell context contribute.
+1 Research Objective
+1.1 Problem definition
+Let a table image be I. A base TSR detector produces an initial candidate set
+C0=Gθ(I), (1)
+where each candidate may contain a bounding box, confidence score, and, depending on the host
+detector, logical information.
+LetC∗denote the ground-truth set of cell instances. In many cases,
+C∗\C0̸=∅, (2)
+1
+--- PAGE 2 ---
+so at least one valid cell has no usable representation in the initial candidate set. We call this
+candidate-set incompleteness .
+The proposed recovery module receives the image and the surviving candidates:
+Cins=Rϕ(I, C 0), (3)
+and forms
+C1=C0∪Cins. (4)
+Each inserted candidate may be represented as
+c= (b, prow, pcol, srow, scol), (5)
+where b= (x, y, w, h ) is the cell box, prowandpcoldenote logical row and column attachment,
+andsrow, scoldenote row and column spans.
+The decision space is intentionally broader than “insert a box whenever a geometric gap exists”:
+z∈ {insert ,no-insert ,span-compatible }. (6)
+The last outcome represents an apparent vacancy that should not be turned into an independent
+cell because it is explained by an existing spanning structure.
+1.2 Central research question
+Can a learned insertion operator recover cell instances that are absent from an
+incomplete detector candidate set, using surviving-cell context and raster-image
+evidence, without introducing unsupported cells or breaking valid spans?
+1.3 Research hypotheses
+1.H1 - Candidate incompleteness: A non-trivial fraction of TSR cell errors can be traced
+to cells that are missing from the retained candidate set.
+2.H2 - Threshold relaxation is insufficient: Lowering the detector threshold can increase
+candidate recall, but the resulting false positives and duplicates prevent it from being an
+equivalent solution to learned insertion.
+3.H3 - Learned insertion can recover natural omissions: A recovery decoder can
+generate correct cell instances that are absent even from a generous pre-filter candidate pool.
+4.H4 - Two sources of evidence matter: Surviving-cell context and local image evidence
+each contribute to insertion accuracy; removing either should reduce performance.
+5.H5 - Explicit no-insertion matters: A model trained to decide whether to insert, rather
+than only to predict a box, should reduce false insertions and erroneous subdivision of
+spanning cells.
+2 Literature Survey
+The project sits at the intersection of cell detection, structural relation modeling, table reconstruc-
+tion, and recent image-to-structure models. The important distinction is between methods that
+improve the original detector, methods that assemble a full structure from predicted elements,
+and methods that explicitly create additional cell instances.
+2
+--- PAGE 3 ---
+2.1 Early cell and structure detection
+Early TSR systems approached table structure as either a detection problem or a decomposition
+problem. DeepDeSRT used deep detection and structure recognition for document tables [ 1].
+CascadeTabNet combined table detection and cell recognition in a CNN-based pipeline [ 2].
+GraphTSR framed TSR as graph relation prediction between detected table cells and established
+a graph-based formulation for complex scientific tables [ 3]. These methods demonstrate that cell
+localization alone does not determine the final table structure; relations among cells are needed.
+2.2 Split-and-merge and grid-based methods
+Split-and-merge systems predict a regular representation and subsequently merge elements to
+account for spanning cells. Deep Splitting and Merging [ 4] and SEM (Split, Embed and Merge)
+[5] are representative examples. TSRFormer models table separators with a Transformer and
+reconstructs spans from the predicted grid [ 9]. GridFormer uses grid prediction and structural
+relations to model the table layout [10].
+These methods are relevant because a regular grid can expose apparent vacancies. However, the
+existence of a geometric vacancy is not enough to establish that an independent cell should be
+inserted. A vacancy may be an empty region belonging to a spanning cell or may arise from an
+imperfect detection.
+2.3 Global structure and learned reconstruction
+LGPMA (Local and Global Pyramid Mask Alignment) is particularly relevant to the proposed
+problem [ 6]. It predicts local cell-related information together with global table segmentation and
+includes an empty-cell recovery process based on structural alignment. Its recovery procedure
+searches for vacant positions and uses image-level segmentation to determine how regions should
+be merged.
+LGPMA therefore rules out a broad novelty claim of “combining topology with image evidence
+for missing-cell recovery.” The proposed work needs to address a different intervention: learned
+insertion of omitted cell instances into an incomplete detector-produced candidate set, including
+a learned decision not to insert.
+Relation and logical-coordinate methods further emphasize structural reasoning. TGRNet jointly
+predicts spatial and logical locations and reconstructs the table graph [ 7]. LORE uses an
+anchor-free detection formulation and predicts logical coordinates alongside spatial boxes [ 13].
+TableCenterNet similarly targets one-stage prediction of spatial and logical cell locations [ 15].
+These methods strengthen the detector or predict structure jointly; they do not, by themselves,
+establish an insertion operator whose output cardinality can exceed an incomplete candidate set.
+2.4 Sequence generation and image-to-structure models
+TableFormer uses Transformer decoding for table structure understanding and combines cell
+localization with structured sequence generation [ 11]. VAST introduces visual-alignment sequen-
+tial coordinate modeling and uses visual alignment to improve coordinate prediction [ 14]. More
+recent models extend this trend. TableSeq represents image, structure, and cell localization in a
+unified autoregressive sequence [ 23]. FastTab uses recursive structure prediction and ROI-aligned
+features for grid and span inference [ 24]. StrucTab introduces intermediate structural supervision
+and a structured optimization framework for table parsing [ 25]. BGTR uses detected bounding
+3
+--- PAGE 4 ---
+boxes to guide HTML generation [ 26]. TPGCAT introduces text-prior-guided cell alignment for
+table structure recognition [27].
+These models show that strong TSR systems can reason over geometry and structure jointly.
+They do not make the specific problem of expanding an incomplete candidate set the primary
+inference operation.
+2.5 Missing-cell and reconstruction methods
+The closest direct prior work is a line of table reconstruction methods that infer cells absent
+from an initial detection. The historical-record reconstruction work published in IJDAR in 2025
+explicitly infers missing cells from the horizontal and vertical alignment of detected positive cells
+and generates candidates at identified gaps [ 16]. A related 2025 IJDAR study on semi-supervised
+TSR also evaluates missing-cell generation and reconstruction in historical tables [17].
+These systems establish that coordinate-based candidate generation from surviving detections is
+not new. They motivate using such geometric completion as a required baseline rather than as
+the proposed method.
+TableFormer also contains PDF-oriented handling of orphan content that can lead to structural
+cell creation from document geometry [ 11]. This is not equivalent to the proposed raster-only
+inference setting because PDF text and geometry provide information that is unavailable to a
+pure image-based model. It is nevertheless evidence that structural cell creation itself is not a
+new operation.
+2.6 Detector failure and suppression
+Detection-based TSR systems also expose a different route to omission: the detector can generate
+a weak prediction that is later removed. Table Transformer (TATR) uses DETR-style object
+detection for cells, rows, and columns in the PubTables-1M benchmark [ 12]. TableCenterNet,
+LORE, and other detector families similarly rely on confidence scores or peak selection. Recent
+work such as OG-HFYOLO focuses on improving table-cell instance detection and reducing
+omissions or suppression errors [ 21]. ConRTF targets boundary localization through an edge-
+constrained training objective rather than a candidate insertion stage [22].
+These methods suggest an important experimental control: any learned recovery method must
+be compared against simply lowering the detector threshold or improving the detector itself.
+2.7 Scene and deformed tables
+WTW (“Parsing Table Structures in the Wild”) was introduced for tables with natural visual
+deformation, including inclined, curved, blurred or occluded, extreme-aspect-ratio, overlaid,
+multicolor, and irregular tables [ 8]. Methods such as SCAN address inclined and curved tables
+using segmentation collaboration and cell alignment [ 20]. WTW is therefore useful as a stress
+test for whether candidate insertion remains valid when a regular-grid assumption becomes
+unreliable.
+3 What Is Actually Novel?
+After the literature survey, the novelty claim must be narrow. The following statements are
+already established and should not be used as the main contribution:
+4
+--- PAGE 5 ---
+Table 1: Novelty boundary after the literature survey.
+Claim Assessment
+Recover missing cells from surviving de-
+tectionsEstablished in geometric and historical-record
+reconstruction.
+Find vacancies using row/column align-
+ment or topologyEstablished.
+Use image evidence together with struc-
+tural informationEstablished by methods such as LGPMA and
+several modern TSR models.
+Refine cell geometry with structural con-
+textEstablished.
+Create new structural cells in a recon-
+struction pipelineEstablished in several settings, including
+PDF-oriented processing.
+Learned insertion of omitted in-
+stances from an incomplete detector
+set, with variable output cardinalityNarrow contribution to test.
+Explicit insert / no-insert / span-
+compatible decisionPotentially differentiating; requires
+experiments.
+Training under candidate deletion
+and evaluation on natural omissions,
+including cells absent from a gener-
+ous candidate poolA useful evaluation and training package.
+The proposed contribution is therefore not a new form of geometric gap filling. It is a learned
+operator that takes an incomplete set of detector-produced instances and decides whether
+additional instances are justified by the image and the surviving table structure. The output
+cardinality is allowed to grow, and the model can explicitly output “no insertion.”
+A proposed formal statement is:
+We study detection-conditioned cell insertion for TSR: given a raster table image
+and an incomplete candidate set produced by a base cell detector, learn a variable-
+cardinality decoder that inserts additional cell instances only when image evidence
+and surviving-cell context support them, while preserving valid spanning structures.
+This claim is deliberately weaker than a “first missing-cell recovery” claim. A final first-of-its-kind
+statement should only be made after an exhaustive search immediately before submission.
+4 Proposed Framework
+4.1 Design principles
+The first implementation should satisfy five constraints:
+1. The base detector is kept fixed when measuring the contribution of recovery.
+2.The recovery module operates on raster image features and detector outputs; OCR or PDF
+metadata are not required at inference.
+3.The recovery decoder has a variable number of outputs rather than one fixed query per
+geometric gap.
+5
+--- PAGE 6 ---
+4.A candidate may be classified as “no insertion,” which prevents the model from turning
+every vacancy into a cell.
+5.Existing detector predictions are initially left unchanged so that the experiment isolates the
+value of candidate insertion.
+4.2 Initial host detector
+The first host should be Table Transformer (TATR) because it has an established implementation,
+is trained for cell/row/column detection on PubTables-1M, and exposes explicit cell boxes
+and confidence scores [ 12]. The same recovery module can later be attached to LORE or
+TableCenterNet to test whether the method is tied to one detector family [13, 15].
+4.3 Architecture
+The proposed initial architecture, Learn2Insert , contains three learned components around a
+frozen or jointly fine-tuned host detector.
+Table image IVisual encoder
+multi-scale featuresInsertion-query
+decoderExpanded candidate set
+C0∪CinsFinal structural
+decoding
+Base cell detector
+candidate set C0Surviving-cell
+context encoderInsert / no-insert
+box + logical span
+Figure 1: Initial framework. The base detector provides surviving cell candidates, while the
+insertion decoder combines their context with image features and can produce a variable number
+of new candidates.
+4.3.1 Visual encoder
+A ResNet-50/FPN or a similar moderate-size image encoder is sufficient for the first prototype.
+The aim is not to introduce a new backbone. Features F=E(I) are sampled around candidate
+and query regions.
+4.3.2 Surviving-cell context encoder
+Each retained candidate becomes a node with feature vector
+hi= [hvis
+i;hgeom
+i;si], (7)
+where hvis
+iis an ROI feature, hgeom
+i encodes normalized box coordinates and size, and siis
+detector confidence.
+Edges or attention biases can encode relative horizontal/vertical distance, alignment, overlap,
+and containment. A small graph network or set Transformer produces contextual representations
+H= ContextEncoder( {hi}N
+i=1). (8)
+6
+--- PAGE 7 ---
+4.3.3 Insertion-query decoder
+Use a small learned query bank Q={qj}M
+j=1, rather than constructing one query for every
+geometric vacancy. Each query attends to both Hand visual features F:
+zj= CrossAttn( qj, H, F ). (9)
+The decoder produces
+pins
+j=σ(fcls(zj)), (10)
+ˆbj=fbox(zj), (11)
+ˆrj=frow(zj), (12)
+ˆcj=fcol(zj), (13)
+ˆsj=fspan(zj). (14)
+A “no insertion” state is represented by the classification head. Span prediction can be represented
+either by start/end row and column offsets or by discrete span classes in the first implementation.
+4.3.4 Compatibility and duplicate suppression
+For an inserted candidate cj, a compatibility head estimates whether the proposal is geometri-
+cally and structurally compatible with nearby surviving cells. The first prototype should use
+deterministic duplicate removal after insertion. A learned compatibility score can be added later
+if the simple version produces useful recovery gains.
+5 Training Strategy
+5.1 Controlled candidate deletion
+The first training stage creates incomplete candidate sets from annotated tables. Let C+be the
+subset of ground-truth cells represented by correctly matched base-detector candidates. A mask
+M⊂C+is sampled and removed from the input candidate set:
+C′
+0=C0\M. (15)
+The image remains unchanged. The recovery decoder is trained to produce candidates matching
+the removed cells.
+Deletion should not be purely random. Four cases should be included:
+1. isolated cell deletion;
+2. adjacent deletion of two or more cells;
+3. deletion near a spanning cell;
+4. deletion patterns sampled from real detector errors.
+The last case is introduced after a baseline detector has been profiled.
+5.2 Set-based supervision
+Because the number of insertion queries is fixed while the number of missing cells varies, a
+DETR-style matching loss is suitable. For matched prediction-target pairs:
+Lins=λclsLcls+λboxLbox+λspanLspan. (16)
+7
+--- PAGE 8 ---
+The box term may combine L1 loss and generalized IoU loss:
+Lbox=α∥b−ˆb∥1+β
+1−GIoU( b,ˆb)
+. (17)
+Unmatched queries are supervised as “no insertion.” This is important because the method
+should not be rewarded merely for increasing the number of candidates.
+5.3 Transition to natural omissions
+After the synthetic deletion stage converges, the training data should include candidate sets
+produced by the real detector. For each image, the recovery module sees exactly the candidates
+that the detector would normally retain. Ground truth is used only to define targets during
+training. At test time the module receives no deletion mask and no ground-truth topology.
+6 Experimental Design
+6.1 Evaluation protocol 1: controlled omissions
+Start from detector outputs and deliberately remove selected true-positive candidates while
+leaving the original image untouched. This isolates the insertion capability from the detector’s
+unrelated errors.
+Evaluate deletion rates of 10%, 20%, 30%, 40%, and 50% of eligible candidates. The evaluation
+should contain isolated deletions, adjacent deletions, and deletions close to spanning cells. Intact
+tables with no deleted candidates are also required. On those tables, the correct behavior is
+often “no insertion.”
+6.2 Evaluation protocol 2: natural omissions
+Run the base detector normally. After inference, match its candidates to the ground-truth cells
+only for analysis. Split the missed cells into two groups:
+1.filtered omissions : a corresponding candidate exists in a pre-filter or low-confidence pool
+but is removed by the standard threshold;
+2.proposal omissions : no candidate in a generous pre-filter pool matches the ground-truth
+cell.
+The second category is the strongest test of the proposed method because the recovery module
+must create an instance rather than recover a discarded low-confidence prediction.
+6.3 Baselines
+The central comparison should keep the host detector fixed.
+For whole-system context, report LGPMA, SEM, TableFormer, LORE, TableCenterNet, and
+representative recent TSR systems where reproducible implementations and compatible evaluation
+protocols are available. These comparisons should be presented separately from the same-detector
+intervention table so that a change in backbone or decoding paradigm is not confused with the
+effect of insertion.
+8
+--- PAGE 9 ---
+Table 2: Same-detector baselines and the question each one answers.
+Variant Purpose
+Base detector Establishes the initial candidate and final structure quality.
+Lower detection threshold Tests whether retaining more detector candidates is sufficient.
+Geometric gap completion Tests coordinate-based reconstruction from surviving cells.
+Topology/context-only re-
+coveryTests whether visual evidence is necessary.
+Image-only recovery Tests whether surviving-cell context is necessary.
+Full recovery model Uses both candidate context and image evidence.
+6.4 Datasets
+PubTables-1M contains approximately 947,642 tables and provides large-scale cell, row, and
+column annotations, including complex tables with spanning cells [ 12]. SciTSR contains 15,000
+scientific tables, with a designated complex subset (SciTSR-COMP) in the test set [ 28]. WTW
+contains 14,581 table images and covers several types of natural visual deformation; its annotations
+include quadrilateral cell geometry and logical row/column coordinates [8].
+6.5 Metrics
+The evaluation has two layers: standard TSR metrics and task-specific insertion metrics.
+6.5.1 Standard TSR metrics
+•GriTS: report topology, location, and content components where the dataset supports
+them. GriTS was designed to compare table structures as grids and separates topology and
+localization effects [18].
+•TEDS: use for tree-structure similarity when an HTML-like representation is available [ 19].
+•Cell localization: precision, recall, F1, AP 50, AP 75, and average recall where appropriate.
+•SciTSR relation accuracy: report the standard cell adjacency relation precision, recall,
+and F1 used for the dataset [28].
+•WTW structure/localization: follow the official evaluation protocol and include logical
+structure plus cell localization metrics; TEDS can be reported where the conversion to the
+required tree format is reliable.
+6.5.2 Candidate-recovery metrics
+For the new intervention, define a prediction as a matched insertion when its box reaches a
+chosen IoU threshold with an omitted ground-truth cell and its logical attachment is compatible.
+Insertion precision
+Pins=|Cins∩Cmiss|
+|Cins|. (18)
+Recovery recall
+Rrec=|Cins∩Cmiss|
+|Cmiss|. (19)
+9
+--- PAGE 10 ---
+Table 3: Planned datasets and their roles.
+Dataset Role Protocol
+PubTables-1M Main development and in-
+domain benchmark.Train the host/recovery models, tune
+thresholds on validation, report primary
+candidate and structure results on the
+official test split.
+SciTSR Cross-dataset structural eval-
+uation.Transfer the trained recovery model
+where compatible; optionally fine-tune on
+the training split as a separate setting.
+Report full test performance.
+SciTSR-COMP Stress test for complex scien-
+tific tables.Report separately as a subset of the
+SciTSR test set; focus on spans and
+dense structural relations.
+WTW Cross-domain test for de-
+formed and scene tables.Evaluate natural deformation, irregular
+geometry, and logical cell reconstruction.
+ICDAR-2013 Optional legacy comparison. Use as a small external sanity check
+rather than the main evidence.
+PubTabNet Optional auxiliary bench-
+mark.Add only after verifying the chosen
+cell-level and structure annotations
+support the insertion metrics.
+PubTables-v2 Optional extension. Consider later for multi-page/full-page
+settings once the single-page insertion
+task is established.
+Insertion F1
+F1ins=2PinsRrec
+Pins+Rrec. (20)
+False insertion rate
+FIR =|Cins\C∗|
+|Cins|. (21)
+Candidate recall gain
+∆CR=CR(C0∪Cins)−CR(C0), (22)
+where CRis computed against the cell ground truth under the selected matching protocol.
+Span violation rate Measure the fraction of inserted cells that create a subdivision inside a
+ground-truth spanning cell or that conflict with a valid span assignment.
+No-change accuracy On intact tables, report the fraction of tables for which the recovery
+module inserts no unsupported cell.
+All insertion metrics should be reported at more than one IoU threshold, with 0 .50 and 0 .75
+as the initial settings. A stricter structural match can require exact start/end row and column
+coordinates when those annotations exist.
+10
+--- PAGE 11 ---
+7 Ablation Plan
+The key ablation is a 2 ×2 factorization of information sources:
+Table 4: Core information ablation.
+No candidate context Candidate context
+No image evidence No recovery / control Context-only
+Image evidence Image-only Full model
+Additional ablations should test:
+1. number of insertion queries M;
+2. deletion ratio during training;
+3. random versus detector-derived deletion;
+4. box-only versus box-plus-span prediction;
+5. with versus without the no-insertion class;
+6. deterministic versus learned compatibility filtering;
+7. one-pass versus iterative recovery, only after the one-pass model is understood.
+The model should not be declared useful from a synthetic deletion experiment alone. Natural
+omissions are the deciding evaluation.
+8 Failure Analysis
+A central part of the project is to record the failure modes created by insertion. At minimum,
+each false positive should be assigned to one of the following categories:
+1. false geometric gap;
+2. over-segmentation of a spanning cell;
+3. duplicate of an existing detector candidate;
+4. incorrect box despite correct structural location;
+5. incorrect logical row/column attachment;
+6. unsupported insertion on an intact table.
+For true recoveries, record whether the cell was filtered from a low-confidence candidate pool
+or absent from the generous pre-filter pool. The second case should be reported as a separate
+headline result.
+9 Computational Scope and Feasibility
+The initial system is intentionally modest. The first version does not require a large vision-
+language model, OCR generation, reinforcement learning, or an exact optimizer. The host
+detector and visual encoder can be kept frozen while the recovery module is trained. This makes
+the first study feasible on a single consumer GPU with staged experiments.
+A practical sequence is:
+11
+--- PAGE 12 ---
+1. build the candidate-tracing and controlled-deletion pipeline;
+2. implement geometric completion and lower-threshold baselines;
+3. train an image-only insertion decoder;
+4. add surviving-cell context;
+5. evaluate natural omissions;
+6. only then consider joint fine-tuning or a second host detector.
+The first success criterion should be a controlled recovery result. The second is a natural-omission
+result. End-to-end GriTS/TEDS gains come only after those two results are established.
+10 Expected Research Contributions
+The project will aim to deliver three concrete outputs.
+1.A problem formulation: detection-conditioned cell insertion as a distinct stage between
+initial cell prediction and final structural decoding.
+2.A learned insertion architecture: a variable-cardinality decoder that uses image evidence
+and surviving-cell context and can output “no insertion.”
+3.An evaluation protocol: controlled candidate deletion and natural-omission analysis that
+separates threshold rescue from genuine proposal generation.
+The central empirical claim, if supported, will be:
+At comparable insertion precision, a learned insertion module recovers more genuine
+detector omissions than threshold relaxation and geometric gap completion, including
+cells absent from a generous pre-filter candidate pool, while preserving valid spanning
+structures.
+This is the result that would justify a full TSR architecture paper. A small gain in a final table
+metric without this evidence would not be sufficient.
+11 Risks and Decision Criteria
+A simple go/no-go rule is recommended:
+Proceed to a larger architecture only if the full model beats geometric completion and
+image-only recovery on natural omissions at a matched insertion-precision operating
+point, and the gain includes cases absent from the generous pre-filter pool.
+12 Phased Work Plan
+13 Positioning for a Future Paper
+A future paper should avoid presenting the work as a general solution to “missing cells.”
+The literature already contains vacancy inference, empty-cell reconstruction, structure-guided
+12
+--- PAGE 13 ---
+Table 5: Main technical risks and the corresponding diagnostic test.
+Risk Diagnostic
+Threshold relaxation solves most
+omissionsCompare at matched insertion precision and candidate
+budget.
+Geometric completion is equally
+strongUse the same detector output and test complex/span
+cases.
+Image evidence is unnecessary Compare full model to context-only recovery.
+Surviving-cell context is unneces-
+saryCompare full model to image-only recovery.
+Synthetic deletion does not re-
+semble detector errorsTrain/evaluate on natural omissions and analyze omission
+types.
+The method inserts too many
+false cellsMeasure false insertion rate, intact-table no-change
+accuracy, and span violation rate.
+The improvement is host-specific Attach the recovery module to a second detector such as
+LORE or TableCenterNet.
+Table 6: Proposed development schedule.
+Phase Work Deliverable
+1 Reproduce host detector, build candidate matching,
+threshold sweeps, and omission taxonomy.Baseline candidate-
+tracing report.
+2 Implement controlled deletion and geometric
+completion.Recovery bench-
+mark and geometric
+baseline.
+3 Implement image-only insertion decoder. First learned recov-
+ery model.
+4 Add surviving-cell context encoder and
+no-insertion/span heads.Full first architec-
+ture.
+5 Natural omission evaluation on PubTables-1M. Main insertion re-
+sults.
+6 SciTSR, SciTSR-COMP, and WTW evaluation. Cross-domain and
+structural stress
+tests.
+7 Second host detector, efficiency analysis, and final
+ablations.Architecture robust-
+ness study.
+13
+--- PAGE 14 ---
+coordinate prediction, and modern joint TSR architectures. The paper should instead center on
+the following sequence:
+incomplete detector output →learned insertion decision
+→new cell candidates →structural decoding .(23)
+The main figure should show examples in which the base detector misses a cell and the proposed
+module inserts it, together with hard negatives where the apparent gap belongs to a spanning
+cell. The main quantitative table should report insertion precision/recall and final structure
+metrics side by side. The most convincing qualitative examples are likely to be those where
+lower thresholds either fail to recover the cell or create a competing false candidate.
+The project should also retain a clear distinction between a methodological claim and an
+empirical result. “We propose a learned insertion operator” is a design statement. “The operator
+recovers 18.4% of natural proposal omissions at 92.1% insertion precision” would be an empirical
+statement and should only appear after measurement.
+14 Conclusion
+The literature does not leave a broad “missing-cell reconstruction” problem untouched. LGPMA
+already combines structural vacancy reasoning with image-level information, historical-table work
+generates missing cells from aligned detections, and recent TSR models increasingly combine
+geometry and structure. The viable research question is narrower: whether a dedicated learned
+insertion stage can expand an incomplete detector candidate set in a controlled way.
+The initial architecture therefore remains deliberately small: a standard cell detector, a surviving-
+cell context encoder, and a learned insertion decoder that attends to image features and can
+output either a new cell or no insertion. The experimental design is more important than
+architectural complexity. PubTables-1M will support the main ablations, SciTSR and SciTSR-
+COMP will test dense structural layouts, and WTW will test deformed real-world tables. The
+decisive evidence will be recovery of natural omissions that are absent from a generous candidate
+pool, at a precision level that threshold relaxation and geometric completion cannot match.
+References
+[1]S. Schreiber, S. Agne, I. Wolf, A. Dengel, and S. Ahmed, “DeepDeSRT: Deep Learning for
+Detection and Structure Recognition of Tables in Document Images,” ICDAR , 2017, pp.
+1162–1167.
+[2]A. Prasad, S. Kaur, and M. Bhardwaj, “CascadeTabNet: An Approach for End to End Table
+Detection and Structure Recognition from Image-Based Documents,” arXiv:2004.12629,
+2020.
+[3]Z. Chi, H. Huang, H. D. Xu, H. Yu, W. Yin, and X. L. Mao, “Complicated Table Structure
+Recognition,” arXiv:1908.04729, 2019.
+[4]C. Tensmeyer, V. I. Morariu, B. Price, S. Cohen, and T. Martinez, “Deep Splitting and
+Merging for Table Structure Decomposition,” ICDAR , 2019, pp. 114–121.
+[5]Z. Zhang, J. Zhang, J. Du, and F. Wang, “Split, Embed and Merge: An Accurate Table
+Structure Recognizer,” Pattern Recognition , vol. 126, 108565, 2022.
+14
+--- PAGE 15 ---
+[6]L. Qiao, Z. Li, Z. Cheng, P. Zhang, S. Pu, Y. Niu, W. Ren, W. Tan, and F. Wu, “LGPMA:
+Complicated Table Structure Recognition with Local and Global Pyramid Mask Alignment,”
+ICDAR , 2021, pp. 99–114.
+[7]W. Xue, B. Yu, W. Wang, D. Tao, and Q. Li, “TGRNet: A Table Graph Reconstruction
+Network for Table Structure Recognition,” ICCV , 2021, pp. 1295–1304.
+[8]R. Long, W. Wang, M. Xue, Y. Huang, Y. Bai, J. Zhang, and C. Yao, “Parsing Table
+Structures in the Wild,” ICCV , 2021.
+[9]W. Lin, Z. Sun, C. Ma, M. Li, J. Wang, L. Sun, and Q. Huo, “TSRFormer: Table Structure
+Recognition with Transformers,” ACM Multimedia , 2022.
+[10]P. Lyu, W. Ma, H. Wang, Y. Yu, C. Zhang, K. Yao, Y. Xue, and J. Wang, “GridFormer:
+Towards Accurate Table Structure Recognition via Grid Prediction,” ACM Multimedia ,
+2023, pp. 7747–7757.
+[11]A. Nassar, M. Livathinos, M. Lysak, and P. Staar, “TableFormer: Table Structure Under-
+standing with Transformers,” CVPR , 2022, pp. 4614–4623.
+[12]B. Smock, R. Pesala, and R. Abraham, “PubTables-1M: Towards Comprehensive Table
+Extraction from Unstructured Documents,” CVPR , 2022, pp. 4634–4642.
+[13]H. Xing, F. Gao, R. Long, J. Bu, Q. Zheng, L. Li, C. Yao, and Z. Yu, “LORE: Logical
+Location Regression Network for Table Structure Recognition,” AAAI , vol. 37, no. 3, pp.
+2992–3000, 2023.
+[14]Y. Huang, N. Lu, D. Chen, Y. Li, Z. Xie, S. Zhu, L. Gao, and W. Peng, “Improving Table
+Structure Recognition with Visual-Alignment Sequential Coordinate Modeling,” CVPR ,
+2023, pp. 11134–11143.
+[15]A. Xiao and C. Yang, “Towards One-Stage End-to-End Table Structure Recognition with
+Parallel Regression for Diverse Scenarios,” arXiv:2504.17522, 2025.
+[16]Tabular Context-Aware Optical Character Recognition and Tabular Data Reconstruction for
+Historical Records ,International Journal of Document Analysis and Recognition , vol. 28,
+pp. 357–376, 2025.
+[17]Data Rescue of Historical Tables through Semi-Supervised Table Structure Recognition ,
+International Journal of Document Analysis and Recognition , 2025.
+[18]B. Smock, R. Pesala, and R. Abraham, “GriTS: A Grid Table Similarity Metric for Table
+Structure Recognition,” arXiv:2203.12555, 2022; WACV, 2023.
+[19] “Evaluating Table Structure Recognition: A New Perspective,” arXiv:2208.00385, 2022.
+[20]Scene Table Structure Recognition with Segmentation Collaboration and Alignment ,Pattern
+Recognition Letters , 2023.
+[21]OG-HFYOLO: Deformation Table Cell Instance Segmentation with Gradient-Orientation
+Features and Heterogeneous Kernels , arXiv:2504.20682, 2025.
+[22]ConRTF: Edge-Constrained Boundary Distribution Refinement for Realtime TransFormer
+Table Structure Recognition , arXiv:2607.00734, 2026.
+[23]TableSeq: Unified Image-to-Table Structure and Content Recognition with Autoregressive
+Coordinate Tokens , arXiv:2604.16070, 2026.
+15
+--- PAGE 16 ---
+[24]FastTab: A Fast Table Recognizer with a Tiny Recursive Module and 1D Transformers ,
+arXiv:2605.22422, 2026.
+[25]StrucTab: A Structured Optimization Framework for Table Parsing , arXiv:2606.29905, 2026.
+[26]L. Hu and S. Huang, “Enhancing Table Structure Recognition via Bounding Box Guidance,”
+arXiv:2609.08705, 2026.
+[27]Text Prior-Guided Cell Alignment with Transformer for Robust Table Structure Recognition ,
+Pattern Recognition , 2026, 114832.
+[28]Z. Chi et al., “SciTSR: a Dataset for Complex Scientific Table Structure Recognition,” 2021.
+This proposal distinguishes established components from the narrower contribution being tested. Any
+final novelty claim should be updated after a submission-time literature search.
+16

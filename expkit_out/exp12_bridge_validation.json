@@ -1,0 +1,315 @@
+{
+  "verdict": "ALL CRITICAL CHECKS PASS \u2014 ledger is bridge-validated",
+  "results": [
+    {
+      "check": "n_tables",
+      "computed": 100,
+      "expected": 100,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "total_gt_cells",
+      "computed": 5646,
+      "expected": 5646,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "splerge_raw_tp",
+      "computed": 1833,
+      "expected": 1833,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "splerge_h1_gt_tp",
+      "computed": 1203,
+      "expected": 1203,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "splerge_h1_ocr_tp",
+      "computed": 1336,
+      "expected": 1336,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "splerge_h2_gt_tp",
+      "computed": 1839,
+      "expected": 1836,
+      "status": "DRIFT",
+      "critical": false,
+      "note": "1,839 is superseded"
+    },
+    {
+      "check": "splerge_h2_ocr_tp",
+      "computed": 1836,
+      "expected": 1836,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "greedy_ocr_tp (suite column: g_ocr_tp)",
+      "computed": 504,
+      "expected": null,
+      "status": "INFO",
+      "critical": false,
+      "note": "informational; historical candidates 504/566"
+    },
+    {
+      "check": "teds_s[raw]",
+      "computed": 0.668,
+      "expected": 0.668,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "teds_s[h1_gt]",
+      "computed": 0.6888,
+      "expected": 0.6888,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "teds_s[h1_ocr]",
+      "computed": 0.7318,
+      "expected": 0.7318,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "teds_s[h2_gt]",
+      "computed": 0.6733,
+      "expected": 0.6733,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "teds_s[h2_ocr]",
+      "computed": 0.6725,
+      "expected": 0.6725,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "grits_top[raw]",
+      "computed": 0.7575,
+      "expected": 0.7575,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "grits_top[h1_ocr]",
+      "computed": 0.7908,
+      "expected": 0.7908,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "grits_top[h2_ocr]",
+      "computed": 0.7605,
+      "expected": 0.7605,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "greedy_csv_exact_tp (sanity vs ILP)",
+      "computed": 1836,
+      "expected": 1836,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "greedy_csv_std_seed42_tp",
+      "computed": 710,
+      "expected": null,
+      "status": "INFO",
+      "critical": false,
+      "note": "informational; resolves 504-vs-566"
+    },
+    {
+      "check": "lore tau=0.35 tp",
+      "computed": 1761,
+      "expected": 1761,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "lore tau=0.35 precision",
+      "computed": 0.9904,
+      "expected": 0.9904,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "lore tau=0.35 recall",
+      "computed": 0.3119,
+      "expected": 0.3119,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "lore tau=0.2 tp",
+      "computed": 5111,
+      "expected": 5111,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "lore tau=0.2 precision",
+      "computed": 0.9918,
+      "expected": 0.9918,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "lore tau=0.2 recall",
+      "computed": 0.9052,
+      "expected": 0.9052,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "lore tau=0.01 fp",
+      "computed": 4576,
+      "expected": 4576,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "tableformer_raw_tp",
+      "computed": 5204,
+      "expected": 5204,
+      "status": "PASS",
+      "critical": true,
+      "note": "Fig.1 legacy 5,203 superseded"
+    },
+    {
+      "check": "tableformer_mwis_tp",
+      "computed": 5202,
+      "expected": 5202,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "tableformer_gtsnap_on_tp",
+      "computed": 5488,
+      "expected": 5488,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "tableformer_gtsnap_off_tp",
+      "computed": 5082,
+      "expected": 5082,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "tableformer_ocrsnap_on_tp",
+      "computed": 3902,
+      "expected": 3902,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "tableformer_ocrsnap_off_tp",
+      "computed": 4921,
+      "expected": 4921,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "tatr_topology_constants",
+      "computed": "recorded",
+      "expected": "1867/1832/13/3/+1",
+      "status": "PASS",
+      "critical": false,
+      "note": "from exp1c audit logs"
+    },
+    {
+      "check": "recompute total_gt_cells",
+      "computed": 5646,
+      "expected": 5646,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "recompute raw_tp",
+      "computed": 1833,
+      "expected": 1833,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "recompute h1_ocr_tp",
+      "computed": 1336,
+      "expected": 1336,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "recompute h2_ocr_tp (ILP)",
+      "computed": 1836,
+      "expected": 1836,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "recompute greedy_normalized_tp",
+      "computed": 1836,
+      "expected": 1836,
+      "status": "PASS",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "check": "recompute_greedy_std",
+      "computed": 504,
+      "expected": "504|566",
+      "status": "INFO",
+      "critical": false,
+      "note": "update ledger to canonical value"
+    }
+  ],
+  "superseded_map": {
+    "splerge_h2_gt_tp=1839": "exploratory coordinate-snapping scripts; canonical W3C grid parser gives 1,836",
+    "tableformer raw=5203 (Fig. 1)": "superseded by ledger 5,204",
+    "greedy 504 vs 566": "resolved by recompute (whichever the canonical seed-42 pipeline yields)",
+    "greedy 20-seed range [674,733]": "superseded by [688,734] after edge-set fix"
+  }
+}

@@ -1,0 +1,13 @@
+E9 — SPLERGE merge-stage trace (token condition: ocr)
+
+stage                 ops  incorrect    rate   cells     TP     FP    prec   TEDS-S
+raw_grid                0          0   0.000    7069   1833   5236  0.2593   0.6680
+col_merging             1          0   0.000    6904   1764   5140  0.2555   0.6653
+row_merging            10          8   0.800    6414   1548   4866  0.2413   0.6383
+remove_seps_0.2       209         27   0.129    4621   1302   3319  0.2818   0.7092
+remove_seps_0.4        27          6   0.222    4404   1216   3188  0.2761   0.6940
+merge_header_v2        71          0   0.000    4333   1203   3130  0.2776   0.6888
+
+ILP (H2) selected multi-tile merges: 69 across 100 tables | correct 50 | incorrect 19 (27.54% incorrect)
+
+A removed separator is flagged INCORRECT when GT cells carry an edge at the removed position across >50% of the table width (i.e., the heuristic fused two cells that GT keeps separate).

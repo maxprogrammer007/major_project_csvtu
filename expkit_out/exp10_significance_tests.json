@@ -1,0 +1,274 @@
+{
+  "tatr_setup": {
+    "dataset": "PubTables-1M (test-sample crop images, 100 tables)",
+    "model": "microsoft/table-transformer-structure-recognition-v1.1-all",
+    "detection_score_threshold": 0.5,
+    "conflict_criterion": "pairwise overlap ratio (intersection over smaller box) >= 0.25, same axis rows/columns; components = connected components of the conflict graph; NMS resolves each component by score-max node",
+    "note": "matching IoU for TP counting = 0.25 (canonical audit matcher)",
+    "conflict_topology": {
+      "num_tables": 100,
+      "total_gt_rows": 1261,
+      "aggregate_tp": {
+        "raw_tp": 1251,
+        "heur_tp": 1244,
+        "mwis_tp": 1245,
+        "net_mwis_gain": 1
+      },
+      "conflict_graph_topology_summary": {
+        "total_candidates": 1286,
+        "total_conflict_edges": 14,
+        "isolated_vertices_pct": 97.98,
+        "isolated_pairs_K2_count": 10,
+        "chains_len3_plus_count": 2,
+        "chains_len3_plus_lengths": [
+          3,
+          3
+        ],
+        "cliques_count": 0,
+        "complex_count": 0,
+        "degree_distribution": {
+          "deg_0_isolated": 1260,
+          "deg_1_leaf": 24,
+          "deg_2_interior": 2,
+          "deg_3_plus": 0
+        }
+      },
+      "diverging_tables_analysis": [
+        {
+          "table_id": "PMC6127715_table_0",
+          "raw_tp": 42,
+          "heur_tp": 37,
+          "opt_tp": 38,
+          "delta": 1,
+          "topology": {
+            "num_vertices": 50,
+            "num_edges": 6,
+            "degree_distribution": {
+              "deg_0_isolated": 39,
+              "deg_1_leaf": 10,
+              "deg_2_interior": 1,
+              "deg_3_plus": 0,
+              "max_degree": 2,
+              "mean_degree": 0.24
+            },
+            "component_counts": {
+              "total_components": 44,
+              "singletons": 39,
+              "isolated_pairs": 4,
+              "chains_len3_plus": [
+                3
+              ],
+              "cliques_size3_plus": [],
+              "complex": []
+            }
+          },
+          "edges": [
+            [
+              12,
+              24
+            ],
+            [
+              14,
+              17
+            ],
+            [
+              18,
+              30
+            ],
+            [
+              19,
+              25
+            ],
+            [
+              29,
+              34
+            ],
+            [
+              30,
+              32
+            ]
+          ],
+          "candidate_scores": [
+            0.8839,
+            0.9997,
+            0.9995,
+            0.7516,
+            0.9998,
+            0.9994,
+            0.9994,
+            0.7398,
+            0.9156,
+            0.9992,
+            0.9984,
+            0.9995,
+            0.7382,
+            0.9997,
+            0.848,
+            0.9877,
+            0.9997,
+            0.7428,
+            0.724,
+            0.7208,
+            0.7362,
+            0.9999,
+            0.9989,
+            0.9994,
+            0.8355,
+            0.6913,
+            0.722,
+            0.9997,
+            0.9997,
+            0.7918,
+            0.7307,
+            0.9997,
+            0.6784,
+            0.9997,
+            0.8216,
+            0.9997,
+            0.9997,
+            0.9997,
+            0.9997,
+            0.6887,
+            0.9997,
+            0.9766,
+            0.9997,
+            0.9996,
+            0.9993,
+            0.9999,
+            0.9997,
+            0.8819,
+            0.9997,
+            0.9997
+          ]
+        }
+      ],
+      "theoretical_explanation": "Greedy NMS is provably optimal on conflict graphs whose connected components are cliques (K_m) or isolated edges (K_2), because selecting the maximal-weight candidate in a clique or single edge satisfies MWIS. Divergence between greedy NMS and exact MWIS occurs ONLY on alternating paths / chains of length >= 3 (e.g. A-B-C with weights 2-3-2) or complex topologies. Across the benchmark, 99.1% of all conflict components are trivial isolated pairs (K_2) or singletons, explaining why greedy and exact MWIS coincide on 99 out of 100 tables, with MWIS gaining exactly +1 TP on the single table exhibiting a length-3 chain conflict."
+    }
+  },
+  "tatr": {
+    "file": "tatr_h2_per_table_metrics.csv",
+    "comparison": "TATR TP: MWIS vs greedy-NMS",
+    "n": 100,
+    "mean_diff": 0.01,
+    "wins_B": 1,
+    "losses_B": 0,
+    "ties": 99,
+    "t_stat": 1.0,
+    "t_p_two_sided": 0.31974847413930185,
+    "wilcoxon_W": 0.0,
+    "wilcoxon_p_two_sided": 0.31731050786291415,
+    "bootstrap95CI_mean_diff": [
+      0.0,
+      0.03
+    ],
+    "mcnemar_exact_p": 1.0
+  },
+  "lore": {
+    "file": "lore_per_table_sweep_results.csv",
+    "taus": [
+      0.2,
+      0.35
+    ],
+    "tp_0.35_vs_0.2": {
+      "comparison": "LORE tp: tau=0.2 vs tau=0.35",
+      "n": 100,
+      "mean_diff": 33.5,
+      "wins_B": 100,
+      "losses_B": 0,
+      "ties": 0,
+      "t_stat": 16.789689232589527,
+      "t_p_two_sided": 1.0024068905997448e-30,
+      "wilcoxon_W": 0.0,
+      "wilcoxon_p_two_sided": 3.8613218325792016e-18,
+      "bootstrap95CI_mean_diff": [
+        29.66,
+        37.5
+      ],
+      "mcnemar_exact_p": 1.577721810442039e-30
+    },
+    "precision_0.35_vs_0.2": {
+      "comparison": "LORE precision: tau=0.2 vs tau=0.35",
+      "n": 100,
+      "mean_diff": 0.0001978832123050922,
+      "wins_B": 7,
+      "losses_B": 13,
+      "ties": 80,
+      "t_stat": 0.06270426884790979,
+      "t_p_two_sided": 0.950128423739599,
+      "wilcoxon_W": 80.0,
+      "wilcoxon_p_two_sided": 0.3506564539028397,
+      "bootstrap95CI_mean_diff": [
+        -0.005251998928537159,
+        0.007106730723533751
+      ],
+      "mcnemar_exact_p": 0.26317596435546853
+    },
+    "f1_0.35_vs_0.2": {
+      "comparison": "LORE f1: tau=0.2 vs tau=0.35",
+      "n": 100,
+      "mean_diff": 0.5293457409150353,
+      "wins_B": 100,
+      "losses_B": 0,
+      "ties": 0,
+      "t_stat": 25.904397895756777,
+      "t_p_two_sided": 6.821364437315238e-46,
+      "wilcoxon_W": 0.0,
+      "wilcoxon_p_two_sided": 3.889312402158803e-18,
+      "bootstrap95CI_mean_diff": [
+        0.489377951272006,
+        0.5692118200117082
+      ],
+      "mcnemar_exact_p": 1.577721810442039e-30
+    }
+  },
+  "splerge": {
+    "n_tables": 100,
+    "total_gt_cells": 5646,
+    "raw_tp": 1833,
+    "h1_gt_tp": 1203,
+    "h1_ocr_tp": 1336,
+    "h2_gt_tp": 1839,
+    "h2_ocr_tp": 1836,
+    "paired_h2ocr_vs_h1ocr": {
+      "comparison": "SPLERGE cell TP: H2_OCR (ILP) vs H1_OCR (heuristic)",
+      "n": 100,
+      "mean_diff": 5.0,
+      "wins_B": 71,
+      "losses_B": 0,
+      "ties": 29,
+      "t_stat": 6.664722138042602,
+      "t_p_two_sided": 1.5150071693410418e-09,
+      "wilcoxon_W": 0.0,
+      "wilcoxon_p_two_sided": 2.2296310271760634e-13,
+      "bootstrap95CI_mean_diff": [
+        3.6397500000000003,
+        6.58
+      ],
+      "mcnemar_exact_p": 8.470329472543003e-22
+    }
+  },
+  "prereg_h2": {
+    "n_tables": 100,
+    "raw_tp": 5204,
+    "mwis_tp": 5202,
+    "sd_paired_diff": 0.14070529413628968,
+    "mean_paired_diff": -0.02
+  },
+  "tableformer_tost": {
+    "comparison": "TableFormer cell TP: MWIS vs raw",
+    "n": 100,
+    "mean_diff": -0.02,
+    "wins_B": 0,
+    "losses_B": 2,
+    "ties": 98,
+    "t_stat": -1.4214106244380287,
+    "t_p_two_sided": 0.15833990565972564,
+    "wilcoxon_W": 0.0,
+    "wilcoxon_p_two_sided": 0.15729920705028502,
+    "bootstrap95CI_mean_diff": [
+      -0.05,
+      0.0
+    ],
+    "mcnemar_exact_p": 0.49999999999999994
+  }
+}

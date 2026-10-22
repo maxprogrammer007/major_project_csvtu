@@ -1,0 +1,26 @@
+{
+  "total_tables": 100,
+  "total_gt_cells": 6927,
+  "detected_tp_cells": 6815,
+  "cell_recall_tau_0_5": 98.38313844377076,
+  "cell_precision_tau_0_5": 95.27470991192507,
+  "total_omissions": 112,
+  "omission_rate_pct": 1.6168615562292477,
+  "filtered_omissions": 24,
+  "filtered_omissions_pct": 21.428571428571427,
+  "proposal_omissions": 88,
+  "proposal_omissions_pct": 78.57142857142857,
+  "row_omissions": {
+    "total_gt_rows": 1261,
+    "missed_rows": 10,
+    "filtered_missed_rows": 2,
+    "proposal_missed_rows": 8
+  },
+  "col_omissions": {
+    "total_gt_cols": 576,
+    "missed_cols": 2,
+    "filtered_missed_cols": 1,
+    "proposal_missed_cols": 1
+  },
+  "decision_rule_proposal_ge_5pct": true
+}
